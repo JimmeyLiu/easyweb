@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+<title>系统异常</title>
+<style type="text/css">
+    body {
+        padding-top: 42px;
+        margin: 0;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        line-height: 20px;
+        color: #333333;
+        height: 100%;
+        overflow-y: scroll;
+        background: #ffffff;
+    }
+
+    div.dialog {
+        /*background: transparent url("/ewassets/images/500.png") no-repeat;*/
+        height: 360px;
+        margin: 50px auto;
+        width: 400px;
+    }
+</style>
+</head>
+<body>
+<div class="dialog">
+    系统错误，请稍后重试!!
+
+</div>
+<div style="display: none">
+    <table width="1100" class="showdata" cellspacing="1">
+        <caption style='margin:8'><h1>Easyweb错误信息</h1></caption>
+        <tr>
+            <th width="100">错误类型</th>
+            <td width="1000">
+                $!errorInfo.errorType
+            </td>
+        </tr>
+        <tr>
+            <th width="100">错误类型信息</th>
+            <td>
+                $!errorInfo.typeMessage
+            </td>
+        </tr>
+
+        <tr>
+            <th width="100">错误堆栈</th>
+            <td>
+                <pre>  $!errorInfo.exception</pre>
+            </td>
+        </tr>
+
+        #if("$!errorInfo.errorPageException" != "")
+            <tr>
+                <th width="100">自定义错误堆栈</th>
+                <td>
+                    $!errorInfo.errorPageException
+                </td>
+            </tr>
+        #end
+    </table>
+</div>
+</body>
+</html>

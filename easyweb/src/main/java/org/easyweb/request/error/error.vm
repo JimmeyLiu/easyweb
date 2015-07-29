@@ -1,0 +1,212 @@
+<html>
+<head>
+    <style type="text/css">
+
+        #error-info {
+            TEXT-ALIGN: center;
+            MARGIN-RIGHT: auto;
+            MARGIN-LEFT: auto;
+            width: 1200px;
+        }
+
+        #error-info table.showdata th {
+            background-color: #F9F9F9;
+            border: 1px solid #FFFFFF;
+            font-size: 12pt;
+            padding: 4px;
+        }
+
+        #error-info table.showdata {
+            background-color: #CDCDCD;
+            font-family: arial;
+            font-size: 8pt;
+            text-align: left;
+        }
+
+        #error-info table.showdata thead tr th, #error-info table.showdata tfoot tr th {
+            background-color: #F4F4F4;
+            border: 1px solid #FFFFFF;
+            font-size: 10pt;
+            padding: 4px;
+        }
+
+        #error-info table.showdata thead tr {
+            background-position: right center;
+            background-repeat: no-repeat;
+            cursor: pointer;
+        }
+
+        #error-info table.showdata tbody td {
+            background-color: #FFFFFF;
+            color: #3D3D3D;
+            padding: 4px;
+            vertical-align: top;
+        }
+
+        #error-info table.showdata tbody tr.odd td {
+            background-color: #F0F0F6;
+        }
+
+        #error-info pre {
+            white-space: pre-wrap; /* css-3 */
+            white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+            white-space: -pre-wrap; /* Opera 4-6 */
+            white-space: -o-pre-wrap; /* Opera 7 */
+            word-wrap: break-word; /* Internet Explorer 5.5+ */
+            overflow-y: scroll;
+        }
+
+        #error-info .hidden {
+            display: none;
+        }
+
+        #error-info ul, #error-info ol {
+            list-style-type: none;
+            list-style-position: inside;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="error-info">
+    <table width="1100" class="showdata" cellspacing="1">
+        <caption style='margin:8'><h1>Easyweb错误信息</h1></caption>
+        <tr>
+            <th width="100">错误类型</th>
+            <td width="1000">
+                $!errorInfo.errorType
+            </td>
+        </tr>
+        <tr>
+            <th width="100">错误类型信息</th>
+            <td>
+                $!errorInfo.typeMessage
+            </td>
+        </tr>
+
+        <tr>
+            <th width="100">错误堆栈</th>
+            <td>
+                <pre>  $!errorInfo.exception</pre>
+            </td>
+        </tr>
+
+
+        #if("$!errorInfo.errorPageException" != "")
+            <tr>
+                <th width="100">自定义错误堆栈</th>
+                <td>
+                    $!errorInfo.errorPageException
+                </td>
+            </tr>
+        #end
+
+        <tr>
+            <td colspan="2" align='center'>
+                <ol style='list-style-type:none'>
+                    #foreach($m in $messages)
+                        <li> $ignoreTool.ignore($m)</li>
+                    #end
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    #if(!$errorInfo.appInfos.isEmpty())
+        #foreach($info in $errorInfo.appInfos)
+            <table width="1100" class="showdata" style="margin-top: 20px" cellspacing="1">
+                <tr>
+                    <th width="160">应用名称</th>
+                    <td width="160">$info.app.name</td>
+                    <th width="120">版本号</th>
+                    <td width="160">$info.app.version </td>
+                    <th width="120">
+                        应用状态
+                    </th>
+                    <td>$info.app.status</td>
+                </tr>
+                <tr>
+                    <th >应用Groovy Bean</th>
+                    <td colspan="5">
+                        #if($info.beans.isEmpty())
+                            应用没有groovy bean
+                        #else
+                            <ul>
+                                #foreach($b in $info.beans.keySet())
+                                    <li>
+                                        $b -> $info.beans.get($b)
+                                    </li>
+                                #end
+                            </ul>
+                        #end
+
+                    </td>
+                </tr>
+                <tr>
+                    <th >自定义VmTool</th>
+                    <td colspan="5">
+                        #if($info.vmTools.isEmpty())
+                            应用没有自定义Vm工具
+                        #else
+                            <ul>
+                                #foreach($b in $info.vmTools.keySet())
+                                    <li>
+                                        $b -> $info.vmTools.get($b)
+                                    </li>
+                                #end
+                            </ul>
+                        #end
+                    </td>
+                </tr>
+                <tr>
+                    <th>注册的页面</th>
+                    <td colspan="5">
+                        #if($info.appUris.isEmpty())
+                            应用没有自定义Vm工具
+                        #else
+                            <div style="width:900px;overflow: auto"></div>
+                            <ul>
+                                #foreach($b in $info.appUris.keySet())
+                                    <li>
+                                        #set($pm = $info.appUris.get($b).pageMethod)
+                                        $b -> $pm.method.name
+                                    </li>
+                                #end
+                            </ul>
+                        #end
+                    </td>
+                </tr>
+            </table>
+        #end
+    #end
+</div>
+<script>
+    function triggle(key) {
+        var el = document.getElementById(key);
+        if (hasClass(el, "hidden")) {
+            removeClass(el, "hidden");
+        }
+        else {
+            addClass(el, "hidden");
+        }
+    }
+
+    function hasClass(ele, cls) {
+        return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+    }
+
+    function addClass(ele, cls) {
+        if (!this.hasClass(ele, cls)) ele.className += " " + cls;
+    }
+
+    function removeClass(ele, cls) {
+        if (hasClass(ele, cls)) {
+            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+            ele.className = ele.className.replace(reg, ' ');
+        }
+    }
+
+
+</script>
+</body>

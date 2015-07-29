@@ -1,0 +1,223 @@
+<html>
+<head>
+    <style type="text/css">
+        body {
+            TEXT-ALIGN: center;
+        }
+
+        #center {
+            MARGIN-RIGHT: auto;
+            MARGIN-LEFT: auto;
+            width: 1200px;
+        }
+
+        table.showdata th {
+            background-color: #F9F9F9;
+            border: 1px solid #FFFFFF;
+            font-size: 12pt;
+            padding: 4px;
+        }
+
+        table.showdata {
+            background-color: #CDCDCD;
+            font-family: arial;
+            font-size: 8pt;
+            text-align: left;
+        }
+
+        table.showdata thead tr th, table.showdata tfoot tr th {
+            background-color: #F4F4F4;
+            border: 1px solid #FFFFFF;
+            font-size: 10pt;
+            padding: 4px;
+        }
+
+        table.showdata thead tr .header {
+            background-position: right center;
+            background-repeat: no-repeat;
+            cursor: pointer;
+        }
+
+        table.showdata tbody td {
+            background-color: #FFFFFF;
+            color: #3D3D3D;
+            padding: 4px;
+            vertical-align: top;
+        }
+
+        table.showdata tbody tr.odd td {
+            background-color: #F0F0F6;
+        }
+
+        pre {
+            white-space: pre-wrap; /* css-3 */
+            white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+            white-space: -pre-wrap; /* Opera 4-6 */
+            white-space: -o-pre-wrap; /* Opera 7 */
+            word-wrap: break-word; /* Internet Explorer 5.5+ */
+            overflow-y: scroll;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        ul, ol {
+            list-style-type: none;
+            list-style-position: inside;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    #macro(showInfo $infoList)
+        #foreach($info in $infoList)
+        <tr>
+            <th width="100">$info.title</th>
+            <td>
+                #if($info.type == 1)
+                    <pre style="height:${info.height}px">$info.content</pre>
+                #elseif($info.type == 2)
+                    <a href="#" onclick="triggle('J_Content_$info.title')">展开/隐藏</a>
+                    <pre id="J_Content_$info.title" class="hidden" style="height:${info.height}px">
+                        $ignoreTool.ignore($info.content)</pre>
+                #else
+                    $info.content
+                #end
+            </td>
+        </tr>
+        #end
+    #end
+<div id="center">
+    <table width="1100" class="showdata" cellspacing="1">
+        <caption style='margin:8'><h1>Easyweb错误调试信息</h1></caption>
+    ##错误日志
+        #showInfo($debugInfo.errorInfo)
+
+    ##信息日志
+        #showInfo($debugInfo.commonInfo)
+
+    ##部署信息
+
+        <tr>
+            <th width="100">部署的应用</th>
+            <td>
+                <a href="#" onclick="triggle('J_DeployInfo')">展开/隐藏</a>
+
+                <div id="J_DeployInfo" class="hidden">
+                    #foreach($info in $debugInfo.appInfos)
+                        <table width="960" class="showdata" style="margin-bottom: 20px" cellspacing="1">
+                            <tr>
+                                <th width="180">应用名称</th>
+                                <td width="160">$info.app.name</td>
+                                <th width="120">版本号</th>
+                                <td width="160">$info.app.version </td>
+                                <th width="120">
+                                    应用状态
+                                </th>
+                                <td>$info.app.status</td>
+                            </tr>
+                            <tr>
+                                <th width="180">应用Groovy Bean</th>
+                                <td colspan="5">
+                                    #if($info.beans.isEmpty())
+                                        应用没有groovy bean
+                                    #else
+                                        <ul>
+                                            #foreach($b in $info.beans.keySet())
+                                                <li>
+                                                    $b -> $info.beans.get($b)
+                                                </li>
+                                            #end
+                                        </ul>
+                                    #end
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="180">自定义VmTool</th>
+                                <td colspan="5">
+                                    #if($info.vmTools.isEmpty())
+                                        应用没有自定义Vm工具
+                                    #else
+                                        <ul>
+                                            #foreach($b in $info.vmTools.keySet())
+                                                <li>
+                                                    $b -> $info.vmTools.get($b)
+                                                </li>
+                                            #end
+                                        </ul>
+                                    #end
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="180">注册的页面</th>
+                                <td colspan="5">
+                                    #if($info.pages.isEmpty())
+                                        应用没有自定义Vm工具
+                                    #else
+                                        <ul>
+                                            #foreach($b in $info.pages.keySet())
+                                                <li>
+                                                    #set($pm = $info.pages.get($b))
+                                                    $b -> ${pm.file}_$pm.method
+                                                </li>
+                                            #end
+                                        </ul>
+                                    #end
+                                </td>
+                            </tr>
+                        </table>
+                    #end
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th width="180">系统信息</th>
+            <td colspan="">
+                <a href="#" onclick="triggle('J_SysInfo')">展开/隐藏</a>
+                <pre id="J_SysInfo" class="hidden" style="height:80px;width: 900px">$debugInfo.getSystemInfo()</pre>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" align='center'>
+                <ol style='list-style-type:none'>
+                    #foreach($m in $messages)
+                        <li> $ignoreTool.ignore($m)</li>
+                    #end
+                </ol>
+            </td>
+        </tr>
+    </table>
+</div>
+<script>
+    function triggle(key) {
+        var el = document.getElementById(key);
+        if (hasClass(el, "hidden")) {
+            removeClass(el, "hidden");
+        }
+        else {
+            addClass(el, "hidden");
+        }
+    }
+
+    function hasClass(ele, cls) {
+        return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+    }
+
+    function addClass(ele, cls) {
+        if (!this.hasClass(ele, cls)) ele.className += " " + cls;
+    }
+
+    function removeClass(ele, cls) {
+        if (hasClass(ele, cls)) {
+            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+            ele.className = ele.className.replace(reg, ' ');
+        }
+    }
+
+
+</script>
+</body>

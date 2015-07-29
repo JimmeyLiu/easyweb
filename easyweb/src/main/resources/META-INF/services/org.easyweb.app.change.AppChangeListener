@@ -1,0 +1,7 @@
+org.easyweb.groovy.groovyobject.AppClassLoaderFactory
+org.easyweb.groovy.groovyobject.Cacher
+org.easyweb.app.AppContainer
+org.easyweb.bean.BeanFactory
+org.easyweb.velocity.VmToolFactory
+org.easyweb.velocity.event.EscapeHtmlEvent
+org.easyweb.app.deploy.ZipBackup
