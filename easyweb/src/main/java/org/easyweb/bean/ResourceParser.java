@@ -1,11 +1,9 @@
 package org.easyweb.bean;
 
-import org.easyweb.groovy.annotation.AnnotationParser;
-import org.easyweb.app.App;
-import org.easyweb.groovy.annotation.AnnotationParser;
 import groovy.lang.GroovyObject;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Component;
+import org.easyweb.app.App;
+import org.easyweb.groovy.annotation.AnnotationParser;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -16,7 +14,6 @@ import java.lang.reflect.Field;
  * User: jimmey/shantong
  * DateTime: 13-3-27 下午5:52
  */
-@Component
 public class ResourceParser extends AnnotationParser {
 
     public ResourceParser() {
@@ -41,12 +38,12 @@ public class ResourceParser extends AnnotationParser {
             name = resource.name();
         }
         Object obj = BeanFactory.getBeans(app).get(name);
-        if (obj == null && !field.getType().isAnnotationPresent(NoGroovy.class)) {
-            try {
-                obj = BeanFactory.getSpringBean(name, field.getType());
-            } catch (Exception e) {
-            }
-        }
+//        if (obj == null && !field.getType().isAnnotationPresent(NoGroovy.class)) {
+//            try {
+//                obj = BeanFactory.getSpringBean(name, field.getType());
+//            } catch (Exception e) {
+//            }
+//        }
         if (obj != null) {
             try {
                 field.setAccessible(true);

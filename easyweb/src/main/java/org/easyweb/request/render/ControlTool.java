@@ -6,20 +6,20 @@ import org.easyweb.util.DirectoryUtil;
 import org.easyweb.util.EasywebLogger;
 import org.easyweb.velocity.AppVmFile;
 import org.easyweb.velocity.VelocityEngine;
-import org.springframework.stereotype.Component;
+import org.easyweb.velocity.VelocityTool;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component("ewControlTool")
-public class ControlTool {
+public class ControlTool implements VelocityTool {
 
-    @Resource(name = "ewVelocityEngine")
-    private VelocityEngine velocityEngine;
-    @Resource(name = "ewCodeRender")
     private CodeRender codeRender;
+
+    public ControlTool() {
+        this.codeRender = CodeRender.getInstance();
+        VelocityEngine.addTool("controlTool", this);
+    }
 
     public Render setTemplate(String vmFile) {
         return new Render(vmFile);
@@ -53,7 +53,6 @@ public class ControlTool {
             File file = new File(groovyFile);
             if (file.canRead()) {
                 try {
-//                context.setLayout(null);
                     return codeRender.render(file, "execute");
                 } catch (Exception e) {
                     EasywebLogger.error("ControlTool Render Error", e);
@@ -64,7 +63,7 @@ public class ControlTool {
             }
             Map<String, Object> map = new HashMap<String, Object>(context.getContextMap());
             map.putAll(params);
-            return velocityEngine.renderTemplate(AppVmFile.getTemplateName(vmFilePath), map);
+            return codeRender.renderTemplate(AppVmFile.getTemplateName(vmFilePath), map);
         }
 
     }

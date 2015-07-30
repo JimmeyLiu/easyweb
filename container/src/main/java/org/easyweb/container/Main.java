@@ -1,11 +1,11 @@
 package org.easyweb.container;
 
+import org.easyweb.Easyweb;
 import org.easyweb.container.handler.EasywebHandler;
 import org.easyweb.request.RequestProcessor;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.bio.SocketConnector;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -18,10 +18,12 @@ public class Main {
         System.setProperty("easyweb.env", "dev");
         System.setProperty("org.mortbay.util.URI.charset", "utf-8");
 
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("easyweb.xml");
-        RequestProcessor processor = (RequestProcessor) ctx.getBean("ewRequestProcessor");
+        Easyweb.initialize();
+
+//        new ClassPathXmlApplicationContext("easyweb.xml");
+
         Server server = new Server();
-        server.addHandler(new EasywebHandler(processor));
+        server.addHandler(new EasywebHandler(RequestProcessor.getInstance()));
         SocketConnector connector = new SocketConnector();
         connector.setPort(8080);
         server.setConnectors(new Connector[]{connector});

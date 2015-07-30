@@ -1,15 +1,13 @@
 package org.easyweb.bean;
 
-import org.easyweb.app.App;
-import org.easyweb.groovy.annotation.AnnotationParser;
 import groovy.lang.GroovyObject;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Component;
+import org.easyweb.app.App;
+import org.easyweb.groovy.annotation.AnnotationParser;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
 
-@Component("ewBeanAnnotationParser")
 public class BeanAnnotationParser extends AnnotationParser {
 
     public BeanAnnotationParser() {
@@ -33,7 +31,7 @@ public class BeanAnnotationParser extends AnnotationParser {
             String s = name.substring(0, 1);
             name = s.toLowerCase() + name.substring(1, name.length());
         }
-        BeanFactory.regist(app, name, groovyObject);
+        BeanFactory.register(app, name, groovyObject);
     }
 
 }

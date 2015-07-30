@@ -1,48 +1,19 @@
 package org.easyweb.bean;
 
-import org.easyweb.groovy.groovyobject.EasywebClassLoader;
 import org.easyweb.app.App;
 import org.easyweb.app.listener.AppChangeAdapter;
 import org.easyweb.context.ThreadContext;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
+import org.easyweb.groovy.groovyobject.EasywebClassLoader;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Component("ewBeanFactory")
-public class BeanFactory extends AppChangeAdapter implements ApplicationContextAware {
+public class BeanFactory extends AppChangeAdapter {
 
 
-    private static ApplicationContext applicationContext;
     private static Map<String, Map<String, Object>> beans = new HashMap<String, Map<String, Object>>();
 
-    public static Object getSpringBean(String beanName) {
-        try {
-            return applicationContext.getBean(beanName);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static Object getSpringBean(String beanName, Class<?> beanType) {
-        Object obj = getSpringBean(beanName);
-        if (obj != null) {
-            return obj;
-        }
-        Map map = applicationContext.getBeansOfType(beanType);
-        if (map.containsKey(beanName)) {
-            return map.get(beanName);
-        }
-        if (!map.isEmpty()) {
-            return map.values().iterator().next();
-        }
-        return null;
-    }
-
-    public static void regist(App app, String name, Object bean) {
+    public static void register(App app, String name, Object bean) {
         /**
          * 不是easyweb classloader加载的，不加载进bean中来
          */
@@ -94,11 +65,6 @@ public class BeanFactory extends AppChangeAdapter implements ApplicationContextA
         String key = app == null ? "local" : app.getAppName();
         return getAppBeans(key);
     }
-
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        BeanFactory.applicationContext = applicationContext;
-    }
-
 
     @Override
     public void stop(App app) {

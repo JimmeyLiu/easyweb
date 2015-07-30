@@ -11,9 +11,7 @@ import org.easyweb.groovy.annotation.AnnotationParser;
 import org.easyweb.groovy.annotation.AnnotationParserFactory;
 import org.easyweb.util.EasywebLogger;
 import org.easyweb.velocity.GroovyVelocityEngine;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.beans.IntrospectionException;
 import java.io.File;
 import java.lang.annotation.Annotation;
@@ -27,15 +25,23 @@ import java.util.List;
  * <p/>
  * groovy对象加载类，和具体的classloader关联，并且classloader会和文件的类型对应
  */
-@Component
 public class GroovyObjectLoader {
 
-    @Resource
     private MethodInterceptor methodInterceptor;
-    @Resource(name = "ewBinding")
     private BeanBinding binding;
-    @Resource(name = "ewGroovyVelocityEngine")
     private GroovyVelocityEngine groovyVelocityEngine;
+
+    private GroovyObjectLoader() {
+        this.methodInterceptor = new MethodInterceptor();
+        this.binding = new BeanBinding();
+        this.groovyVelocityEngine = new GroovyVelocityEngine();
+    }
+
+    private static GroovyObjectLoader instance = new GroovyObjectLoader();
+
+    public static GroovyObjectLoader getInstance() {
+        return instance;
+    }
 
     /**
      * 实例化app中biz下的所有对象

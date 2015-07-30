@@ -1,17 +1,14 @@
 package org.easyweb.groovy.groovyobject;
 
-import org.easyweb.bean.BeanFactory;
-import org.easyweb.bean.BeanFactory;
 import groovy.lang.Binding;
-import org.springframework.stereotype.Component;
+import org.easyweb.bean.BeanFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Component("ewBinding")
 public class BeanBinding extends Binding {
 
-    public static Map<String, Object> outerBindings = new HashMap<String, Object>();
+    public static Map<String, Object> beans = new HashMap<String, Object>();
 
     @Override
     public Object getVariable(String name) {
@@ -34,16 +31,13 @@ public class BeanBinding extends Binding {
     private Object getBean(String name) {
         Object obj = BeanFactory.getBean(name);
         if (obj == null) {
-            obj = BeanFactory.getSpringBean(name);
-        }
-        if (obj == null) {
-            obj = outerBindings.get(name);
+            obj = beans.get(name);
         }
         return obj;
     }
 
     public static void putOuterBindings(Map<String, Object> map) {
-        outerBindings.putAll(map);
+        beans.putAll(map);
     }
 
 }

@@ -1,19 +1,16 @@
 package org.easyweb.velocity;
 
-import org.easyweb.Configuration;
-import org.easyweb.context.ThreadContext;
-import org.easyweb.velocity.tool.PageAttributeTool;
-import org.easyweb.velocity.tool.SystemUtil;
-import org.easyweb.util.EasywebLogger;
-import org.easyweb.profiler.Profiler;
-import org.easyweb.request.render.ControlTool;
-import org.easyweb.velocity.event.EscapeHtmlEvent;
-import org.easyweb.velocity.event.IgnoreTool;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 import org.apache.velocity.runtime.resource.util.StringResourceRepository;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
+import org.easyweb.Configuration;
+import org.easyweb.context.ThreadContext;
+import org.easyweb.profiler.Profiler;
+import org.easyweb.util.EasywebLogger;
+import org.easyweb.velocity.event.EscapeHtmlEvent;
+import org.easyweb.velocity.event.IgnoreTool;
+import org.easyweb.velocity.tool.PageAttributeTool;
+import org.easyweb.velocity.tool.SystemUtil;
 
 import javax.annotation.Resource;
 import java.io.StringWriter;
@@ -26,23 +23,19 @@ import java.util.Properties;
  * Created with IntelliJ IDEA. User: jimmey Date: 12-11-23 Time: 下午10:01 To
  * change this template use File | Settings | File Templates.
  */
-@Component("ewVelocityEngine")
-public class VelocityEngine implements InitializingBean {
-
+public class VelocityEngine {
 
     private org.apache.velocity.app.VelocityEngine velocityEngine;
-    //    @Resource(name = "ewCommonTool")
-//    private CommonTool commonTool;
-    @Resource(name = "ewControlTool")
-    private ControlTool controlTool;
-    @Resource
     private Map<String, Object> velocityTools;
     private PageAttributeTool page = new PageAttributeTool();
 
     private static Map<String, Object> staticTools = new HashMap<String, Object>();
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
+    public VelocityEngine() {
+        init();
+    }
+
+    public void init() throws RuntimeException {
         /**
          * directive.set.null.allowed=true input.encoding=GBK
          * output.encoding=GBK resource.loader = file file.resource.loader.class
@@ -56,13 +49,10 @@ public class VelocityEngine implements InitializingBean {
         velocityProperties.setProperty("input.encoding", Configuration.getCodeCharset());
         velocityProperties.setProperty("output.encoding", Configuration.getCodeCharset());
         velocityProperties.setProperty("resource.loader", "appFile,string");
-//        velocityProperties.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
-//        velocityProperties.setProperty("file.resource.loader.path", Configuration.getDeployPath());
-        velocityProperties.setProperty("appFile.resource.loader.class", "org.easyweb.velocity.AppVmLoader");
+        velocityProperties.setProperty("appFile.resource.loader.class", AppVmLoader.class.getName());
         velocityProperties.setProperty("appFile.resource.loader.cache", "true");
         velocityProperties.setProperty("appFile.resource.loader.modificationCheckInterval", "3");
-        velocityProperties.setProperty("eventhandler.referenceinsertion.class", "org.easyweb.velocity.event.EscapeHtmlEvent");
-
+        velocityProperties.setProperty("eventhandler.referenceinsertion.class", EscapeHtmlEvent.class.getName());
         velocityProperties.setProperty("string.resource.loader.class", "org.apache.velocity.runtime.resource.loader.StringResourceLoader");
 
         velocityEngine = new org.apache.velocity.app.VelocityEngine();
@@ -70,8 +60,6 @@ public class VelocityEngine implements InitializingBean {
         if (velocityTools == null) {
             velocityTools = new HashMap<String, Object>();
         }
-//        velocityTools.put("commonTool", commonTool);
-        velocityTools.put("controlTool", controlTool);
         velocityTools.put("assetsTool", page);
         velocityTools.put("pageTool", page);
         velocityTools.put("systemUtil", new SystemUtil());

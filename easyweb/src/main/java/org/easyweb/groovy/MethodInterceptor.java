@@ -1,20 +1,17 @@
 package org.easyweb.groovy;
 
-import org.easyweb.Configuration;
-import org.easyweb.Configuration;
 import groovy.lang.GroovyObject;
 import groovy.lang.Interceptor;
 import groovy.lang.MetaMethod;
 import groovy.lang.Script;
+import org.codehaus.groovy.reflection.CachedMethod;
+import org.easyweb.Configuration;
+import org.easyweb.groovy.annotation.MethodAnnotationInvokeFactory;
 
 import java.lang.reflect.Method;
 
-import org.codehaus.groovy.reflection.CachedMethod;
-import org.easyweb.groovy.annotation.MethodAnnotationInvokeFactory;
-import org.springframework.stereotype.Component;
-
-@Component("ewMethodInterceptor")
 public class MethodInterceptor implements Interceptor {
+
 
     public Object beforeInvoke(Object object, String methodName, Object[] arguments) {
         if (!Configuration.isMethodInterceptor()) {

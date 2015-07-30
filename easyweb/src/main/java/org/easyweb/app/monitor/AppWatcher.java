@@ -6,8 +6,6 @@ import org.easyweb.app.App;
 import org.easyweb.app.deploy.AppDeployer;
 import org.easyweb.app.monitor.impl.FileAlterationMonitor;
 import org.easyweb.util.EasywebLogger;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -19,15 +17,14 @@ import java.util.Properties;
 /**
  * Created by jimmey on 15-7-30.
  */
-@Component
-public class AppWatcher implements InitializingBean {
+public class AppWatcher {
 
     FileAlterationMonitor monitor;
-    @Resource
     AppDeployer appDeployer;
 
     public AppWatcher() {
         monitor = new FileAlterationMonitor(Configuration.isDevMod() ? 1000 : 10000);
+        this.appDeployer = new AppDeployer();
     }
 
     public void addObserver(AppObserver observer) {
@@ -87,8 +84,7 @@ public class AppWatcher implements InitializingBean {
         }
     });
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
+    public void start() {
         try {
             monitor.start();
             first.start();

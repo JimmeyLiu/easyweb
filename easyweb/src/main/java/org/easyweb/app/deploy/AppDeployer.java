@@ -1,10 +1,9 @@
 package org.easyweb.app.deploy;
 
 import org.easyweb.app.App;
-import org.easyweb.util.EasywebLogger;
 import org.easyweb.app.listener.AppChangeHolder;
 import org.easyweb.app.monitor.ScanResult;
-import org.springframework.stereotype.Component;
+import org.easyweb.util.EasywebLogger;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -16,7 +15,6 @@ import java.util.Map;
  *
  * @author jimmey
  */
-@Component
 public class AppDeployer {
 
     public final static Map<DeployPhase, List<DeployListener>> listeners = new HashMap<DeployPhase, List<DeployListener>>();

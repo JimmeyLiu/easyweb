@@ -8,32 +8,34 @@ import org.easyweb.context.ThreadContext;
 import org.easyweb.profiler.Profiler;
 import org.easyweb.request.assets.AssetsProcessor;
 import org.easyweb.request.pipeline.Pipeline;
-import org.easyweb.request.render.LayoutRender;
-import org.easyweb.request.render.PageRender;
+import org.easyweb.request.render.CodeRender;
 import org.easyweb.request.uri.UriTemplate;
 import org.easyweb.util.EasywebLogger;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Map;
 
-@Component("ewRequestProcessor")
 public class RequestProcessor {
 
     private static String defaultCharset = Configuration.getRequestCharset();
-    @Resource
-    PageRender pageRender;
-    @Resource
-    LayoutRender layoutRender;
+    private static RequestProcessor instance;
+
+    public static RequestProcessor getInstance() {
+        if (instance == null) {
+            instance = new RequestProcessor();
+        }
+        return instance;
+    }
+
+    private RequestProcessor() {
+    }
 
     public void process(HttpServletRequest request, HttpServletResponse response) {
         process(request, response, false);
     }
-
 
     public void process(HttpServletRequest request, HttpServletResponse response, boolean contextInit) {
         process(request, response, contextInit, null);
@@ -140,8 +142,7 @@ public class RequestProcessor {
             if (StringUtils.isNotBlank(pageMethod.getLayout())) {
                 ThreadContext.getContext().setLayout(pageMethod.getLayout());
             }
-            String content = pageRender.render(uriTemplate, inputParams);
-            content = layoutRender.render(content);
+            String content = CodeRender.getInstance().renderPage(uriTemplate, inputParams);
             response(response, content);
         }
     }

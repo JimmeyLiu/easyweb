@@ -1,13 +1,12 @@
 package org.easyweb.app.deploy.process;
 
+import org.easyweb.app.App;
 import org.easyweb.app.deploy.DeployException;
 import org.easyweb.app.deploy.DeployPhase;
 import org.easyweb.app.deploy.Deployer;
-import org.easyweb.groovy.groovyobject.GroovyObjectLoader;
-import org.easyweb.app.App;
-import org.easyweb.util.EasywebLogger;
 import org.easyweb.app.monitor.ScanResult;
-import org.springframework.stereotype.Component;
+import org.easyweb.groovy.groovyobject.GroovyObjectLoader;
+import org.easyweb.util.EasywebLogger;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -18,11 +17,13 @@ import java.util.Set;
  * DateTime: 13-4-25 下午2:55
  */
 @Deployer(DeployPhase.INIT_WEB)
-@Component
 public class WebProcessor extends FileProcessor {
 
-    @Resource
     GroovyObjectLoader groovyObjectLoader;
+
+    public WebProcessor() {
+        this.groovyObjectLoader = GroovyObjectLoader.getInstance();
+    }
 
     @Override
     public void process(ScanResult result) throws DeployException {

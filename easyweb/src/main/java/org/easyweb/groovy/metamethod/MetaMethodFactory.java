@@ -22,7 +22,7 @@ public class MetaMethodFactory {
         defaultImpl = new MetaMethodImpl();
     }
 
-    public static void regist(String appName, IMetaMethod iMetaMethod) {
+    public static void register(String appName, IMetaMethod iMetaMethod) {
         appMetaMethods.put(appName, iMetaMethod);
     }
 

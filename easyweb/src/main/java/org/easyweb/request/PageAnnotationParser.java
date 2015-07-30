@@ -1,17 +1,15 @@
 package org.easyweb.request;
 
-import org.easyweb.annocation.Page;
-import org.easyweb.groovy.annotation.AnnotationParser;
-import org.easyweb.app.App;
-import org.easyweb.util.EasywebLogger;
 import groovy.lang.GroovyObject;
-import org.springframework.stereotype.Component;
+import org.easyweb.annocation.Page;
+import org.easyweb.app.App;
+import org.easyweb.groovy.annotation.AnnotationParser;
+import org.easyweb.util.EasywebLogger;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-@Component
 public class PageAnnotationParser extends AnnotationParser {
 
     @Override

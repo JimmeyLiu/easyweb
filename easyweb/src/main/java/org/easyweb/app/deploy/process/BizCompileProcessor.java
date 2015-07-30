@@ -1,20 +1,16 @@
 package org.easyweb.app.deploy.process;
 
-import org.easyweb.app.deploy.DeployException;
-import org.easyweb.app.deploy.Deployer;
-import org.easyweb.groovy.groovyobject.AppClassLoaderFactory;
-import org.easyweb.groovy.groovyobject.GroovyObjectLoader;
-import org.easyweb.app.App;
-import org.easyweb.util.EasywebLogger;
-import org.easyweb.app.deploy.DeployPhase;
-import org.easyweb.app.monitor.ScanResult;
 import groovy.lang.GroovyClassLoader;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.tools.FileSystemCompiler;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
+import org.easyweb.app.App;
+import org.easyweb.app.deploy.DeployException;
+import org.easyweb.app.deploy.DeployPhase;
+import org.easyweb.app.deploy.Deployer;
+import org.easyweb.app.monitor.ScanResult;
+import org.easyweb.groovy.groovyobject.AppClassLoaderFactory;
+import org.easyweb.util.EasywebLogger;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.net.URL;
 import java.util.Set;
@@ -24,16 +20,15 @@ import java.util.Set;
  * DateTime: 13-4-25 下午2:55
  */
 @Deployer(DeployPhase.COMPILE_GROOVY)
-@Component
-public class BizCompileProcessor extends FileProcessor implements InitializingBean {
-
-    @Resource
-    private GroovyObjectLoader groovyObjectLoader;
+public class BizCompileProcessor extends FileProcessor {
 
     private String classpath;
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
+    public BizCompileProcessor() {
+        init();
+    }
+
+    public void init() throws RuntimeException {
         URL url = BizCompileProcessor.class.getClassLoader().getResource("WEB-INF/lib");
         if (url != null) {
             File file = new File(url.getFile());

@@ -18,7 +18,6 @@ import java.util.Map;
  */
 public class AppUriMapping {
 
-
     private static Map<String, Map<String, UriTemplate>> appUriMappings = new HashMap<String, Map<String, UriTemplate>>();
 
     /**

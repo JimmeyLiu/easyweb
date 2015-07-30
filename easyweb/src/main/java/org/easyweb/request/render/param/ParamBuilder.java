@@ -1,16 +1,14 @@
 package org.easyweb.request.render.param;
 
+import groovyjarjarasm.asm.*;
+import org.apache.commons.lang.StringUtils;
+import org.easyweb.annocation.Param;
+import org.easyweb.annocation.PathVariable;
 import org.easyweb.annocation.RequestBean;
 import org.easyweb.context.Context;
 import org.easyweb.context.ThreadContext;
 import org.easyweb.profiler.Profiler;
-import org.easyweb.annocation.Param;
-import org.easyweb.annocation.PathVariable;
-import org.easyweb.annocation.RequestBean;
-import org.easyweb.request.error.ErrorInfo;
 import org.easyweb.request.uri.UriTemplate;
-import groovyjarjarasm.asm.*;
-import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -57,8 +55,6 @@ public class ParamBuilder {
                 Annotation[] typeAnnotations = annotations[i];
                 if (type.equals(Context.class)) {
                     v = ThreadContext.getContext();
-                } else if (type.equals(ErrorInfo.class)) {
-                    v = ThreadContext.getContext().getContext("errorInfo");
                 } else if (typeAnnotations == null || typeAnnotations.length == 0) {
                     //没有注解，则直接注入null
                     if (inputParams != null) {

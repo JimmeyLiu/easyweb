@@ -1,15 +1,14 @@
 package org.easyweb.request.pipeline;
 
-import org.easyweb.app.deploy.Deployer;
-import org.easyweb.bean.BeanFactory;
+import org.apache.commons.lang.StringUtils;
 import org.easyweb.app.App;
-import org.easyweb.util.EasywebLogger;
 import org.easyweb.app.deploy.DeployException;
 import org.easyweb.app.deploy.DeployPhase;
+import org.easyweb.app.deploy.Deployer;
 import org.easyweb.app.deploy.process.FileProcessor;
 import org.easyweb.app.monitor.ScanResult;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Component;
+import org.easyweb.bean.BeanFactory;
+import org.easyweb.util.EasywebLogger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,7 +20,6 @@ import java.util.Properties;
  * User: jimmey/shantong
  * DateTime: 13-5-3 下午12:01
  */
-@Component
 @Deployer(DeployPhase.AFTER_INIT)
 public class PipelineProcessor extends FileProcessor {
     @Override

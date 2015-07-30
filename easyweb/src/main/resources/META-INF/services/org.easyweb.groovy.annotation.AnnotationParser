@@ -1,0 +1,5 @@
+org.easyweb.request.PageAnnotationParser
+org.easyweb.bean.BeanAnnotationParser
+org.easyweb.bean.ResourceParser
+org.easyweb.groovy.metamethod.MetaMethodParser
+org.easyweb.velocity.VmToolParser
