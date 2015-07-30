@@ -1,6 +1,7 @@
-package org.easyweb.app.modify;
+package org.easyweb.app.monitor;
 
 import org.easyweb.app.App;
+import org.easyweb.app.AppStatus;
 
 import java.io.File;
 import java.util.*;
@@ -19,7 +20,7 @@ public class ScanResult {
     private App app;
 
     private boolean restart;
-
+    private boolean modified;
     /**
      * 所有的web文件
      */
@@ -46,6 +47,14 @@ public class ScanResult {
 
     public void setModifiedWebGroovyFile(Set<String> modifiedWebGroovyFile) {
         this.modifiedWebGroovyFile = modifiedWebGroovyFile;
+    }
+
+    public boolean isModified() {
+        return modified;
+    }
+
+    public void setModified(boolean modified) {
+        this.modified = modified;
     }
 
     public void setWebGroovyFiles(Set<String> webGroovyFiles) {
@@ -116,11 +125,12 @@ public class ScanResult {
         result.setWebGroovyFiles(this.webGroovyFiles);
         result.setSuffixFiles(this.suffixFiles);
         result.setModifiedWebGroovyFile(new HashSet<String>(this.modifiedWebGroovyFile));
-        result.setRestart(restart);
-        bizGroovyFiles.clear();
-        webGroovyFiles.clear();
+        result.setRestart(restart || app.getStatus() == AppStatus.INIT);
+        result.setModified(modified);
+        modifiedWebGroovyFile.clear();
         suffixFiles.clear();
         restart = false;
+        modified = false;
         return result;
     }
 }

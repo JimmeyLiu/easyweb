@@ -1,8 +1,5 @@
 package org.easyweb.util;
 
-import org.easyweb.Configuration;
-import org.easyweb.velocity.tool.SystemUtil;
-import org.easyweb.Configuration;
 import org.easyweb.velocity.tool.SystemUtil;
 
 import java.io.File;
@@ -69,33 +66,7 @@ public class DirectoryUtil {
         return normalizePath(file.getParent());
     }
 
-
-    public static String getAppDeployPath(String appName) {
-        return Configuration.getDeployPath();
-    }
-
-    public static String getAppTempDeployPath(String appName) {
-        return Configuration.getDeployPath();
-    }
-
-    public static String getAppDeployFile(String appName, String fileName) {
-        return getAppDeployPath(appName) + fileName;
-    }
-
-    public static String getAppTemplateDeployFile(String appName, String fileName) {
-        return getAppTempDeployPath(appName) + fileName;
-    }
-
-    public static String getDevPath(String appName, String fileName) {
-        return "";
-    }
-
-
-    public static void main(String[] args) {
-        System.out.println(normalizePath("D:\\a\\b"));
-    }
-
-    public static final String normalizePath(String path) {
+    public static String normalizePath(String path) {
         // Normalize the slashes and add leading slash if necessary
         String normalized = path;
         if (normalized.indexOf('\\') >= 0) {

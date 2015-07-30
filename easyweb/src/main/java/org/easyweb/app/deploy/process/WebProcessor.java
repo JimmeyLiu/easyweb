@@ -6,12 +6,11 @@ import org.easyweb.app.deploy.Deployer;
 import org.easyweb.groovy.groovyobject.GroovyObjectLoader;
 import org.easyweb.app.App;
 import org.easyweb.util.EasywebLogger;
-import org.easyweb.app.modify.ScanResult;
+import org.easyweb.app.monitor.ScanResult;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.File;
-import java.util.List;
 import java.util.Set;
 
 /**

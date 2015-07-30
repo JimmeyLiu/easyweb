@@ -1,6 +1,6 @@
 package org.easyweb.app.deploy;
 
-import org.easyweb.app.modify.ScanResult;
+import org.easyweb.app.monitor.ScanResult;
 
 /**
  * User: jimmey/shantong

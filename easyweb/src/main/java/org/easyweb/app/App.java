@@ -15,6 +15,7 @@ public class App {
      * app名称
      */
     private String name;
+
     /**
      * web目录
      */
@@ -30,16 +31,19 @@ public class App {
      * 2：部署失败
      * -1：删除
      */
-    private int status = 0;
+    private AppStatus status = AppStatus.INIT;
 
     /**
      * 应用部署运行时的文件目录，和deployVersion相关
      */
     private String rootPath;
+
+    private String classpath;
     /**
      * 不做输出转码的配置
      */
     private String velocityNoEscape;
+
 
     public String getName() {
         return name;
@@ -72,6 +76,11 @@ public class App {
      */
     public void setRootPath(File configFile) {
         this.rootPath = DirectoryUtil.getFileParentPath(configFile);
+        this.classpath = this.rootPath + "/classes";
+    }
+
+    public String getClasspath() {
+        return classpath;
     }
 
     public List<String> getWebPaths() {
@@ -82,11 +91,11 @@ public class App {
         this.webPaths = webPaths;
     }
 
-    public int getStatus() {
+    public AppStatus getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(AppStatus status) {
         this.status = status;
     }
 

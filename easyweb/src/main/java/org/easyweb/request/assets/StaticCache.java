@@ -1,13 +1,12 @@
 package org.easyweb.request.assets;
 
-import org.apache.commons.io.IOUtils;
 import org.easyweb.util.EasywebLogger;
+import org.easyweb.util.IOUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

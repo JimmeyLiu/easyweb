@@ -1,11 +1,11 @@
-package org.easyweb.app.modify;
+package org.easyweb.app.monitor;
 
-import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
-import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.easyweb.app.App;
 import org.easyweb.app.AppFileHelper;
 import org.easyweb.app.AppFileType;
 import org.easyweb.app.deploy.AppDeployer;
+import org.easyweb.app.monitor.impl.FileAlterationListenerAdaptor;
+import org.easyweb.app.monitor.impl.FileAlterationObserver;
 import org.easyweb.util.EasywebLogger;
 
 import java.io.File;
@@ -30,8 +30,11 @@ public class AppModifiedListener extends FileAlterationListenerAdaptor {
 
     @Override
     public void onStop(FileAlterationObserver observer) {
-        if (!deploying.compareAndSet(false, true)) {
+        if (deploying.compareAndSet(false, true)) {
             final ScanResult result = scanResult.copyAndReset();
+            if (!result.isModified()) {
+                return;
+            }
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -58,6 +61,7 @@ public class AppModifiedListener extends FileAlterationListenerAdaptor {
                     scanResult.addBizGroovyFile(filePath);
                 }
                 scanResult.setRestart(true);
+                scanResult.setModified(true);
                 break;
             case WEB_GROOVY:
                 if (delete) {
@@ -66,6 +70,7 @@ public class AppModifiedListener extends FileAlterationListenerAdaptor {
                 } else {
                     scanResult.addModifiedWebGroovyFile(filePath);
                 }
+                scanResult.setModified(true);
                 break;
             default:
                 scanResult.addSuffixFile(file);

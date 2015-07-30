@@ -14,9 +14,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("easyweb.deployPath", "/Users/jimmey/workspace/platform/easyweb/container");
+        System.setProperty("easyweb.env", "dev");
+        System.setProperty("org.mortbay.util.URI.charset", "utf-8");
+
         ApplicationContext ctx = new ClassPathXmlApplicationContext("easyweb.xml");
         RequestProcessor processor = (RequestProcessor) ctx.getBean("ewRequestProcessor");
-        System.setProperty("org.mortbay.util.URI.charset", "utf-8");
         Server server = new Server();
         server.addHandler(new EasywebHandler(processor));
         SocketConnector connector = new SocketConnector();

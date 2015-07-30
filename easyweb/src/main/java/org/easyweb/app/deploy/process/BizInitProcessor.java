@@ -5,13 +5,12 @@ import org.easyweb.util.EasywebLogger;
 import org.easyweb.app.deploy.DeployException;
 import org.easyweb.app.deploy.DeployPhase;
 import org.easyweb.app.deploy.Deployer;
-import org.easyweb.app.modify.ScanResult;
+import org.easyweb.app.monitor.ScanResult;
 import org.easyweb.groovy.groovyobject.GroovyObjectLoader;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.File;
-import java.util.List;
 import java.util.Set;
 
 /**

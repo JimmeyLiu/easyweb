@@ -20,19 +20,19 @@ public class AppContainer extends AppChangeAdapter {
 
     @Override
     public void stop(App app) {
-        app.setStatus(0);
+        app.setStatus(AppStatus.ERROR);
         deployedApps.putIfAbsent(app.getAppName(), app);
     }
 
     @Override
     public void success(App app) {
-        app.setStatus(1);
+        app.setStatus(AppStatus.OK);
         deployedApps.putIfAbsent(app.getAppName(), app);
     }
 
     @Override
     public void failed(App app) {
-        app.setStatus(2);
+        app.setStatus(AppStatus.ERROR);
         deployedApps.putIfAbsent(app.getAppName(), app);
     }
 

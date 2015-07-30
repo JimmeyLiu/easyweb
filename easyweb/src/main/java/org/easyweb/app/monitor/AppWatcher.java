@@ -1,10 +1,10 @@
-package org.easyweb.app.modify;
+package org.easyweb.app.monitor;
 
-import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.lang.StringUtils;
 import org.easyweb.Configuration;
 import org.easyweb.app.App;
 import org.easyweb.app.deploy.AppDeployer;
+import org.easyweb.app.monitor.impl.FileAlterationMonitor;
 import org.easyweb.util.EasywebLogger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ public class AppWatcher implements InitializingBean {
     AppDeployer appDeployer;
 
     public AppWatcher() {
-        monitor = new FileAlterationMonitor();
+        monitor = new FileAlterationMonitor(Configuration.isDevMod() ? 1000 : 10000);
     }
 
     public void addObserver(AppObserver observer) {
@@ -90,8 +90,8 @@ public class AppWatcher implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         try {
-            first.start();
             monitor.start();
+            first.start();
         } catch (Exception e) {
             throw new RuntimeException("FileAlterationMonitor Start Error", e);
         }

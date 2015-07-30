@@ -20,7 +20,7 @@ public class AssetsProcessor {
 
     static {
         suffixType.put("js", "application/x-javascript");
-        suffixType.put("css", "text/css;charset=" + Configuration.getHttpCharset());
+        suffixType.put("css", "text/css;charset=" + Configuration.getRequestCharset());
         suffixType.put("jpg", "image/jpeg");
         suffixType.put("jpeg", "image/jpeg");
         suffixType.put("ico", "image/ico");

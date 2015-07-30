@@ -1,6 +1,5 @@
 package org.easyweb.app.deploy.process;
 
-import org.easyweb.Configuration;
 import org.easyweb.app.deploy.DeployException;
 import org.easyweb.app.deploy.Deployer;
 import org.easyweb.groovy.groovyobject.AppClassLoaderFactory;
@@ -8,7 +7,7 @@ import org.easyweb.groovy.groovyobject.GroovyObjectLoader;
 import org.easyweb.app.App;
 import org.easyweb.util.EasywebLogger;
 import org.easyweb.app.deploy.DeployPhase;
-import org.easyweb.app.modify.ScanResult;
+import org.easyweb.app.monitor.ScanResult;
 import groovy.lang.GroovyClassLoader;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.tools.FileSystemCompiler;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.File;
 import java.net.URL;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -59,10 +57,7 @@ public class BizCompileProcessor extends FileProcessor implements InitializingBe
         Set<String> groovyCode = result.getBizGroovyFiles();
         App app = result.getApp();
 
-        String appClassPath = Configuration.getClasspath(app);
-        if (!Configuration.isDev()) {
-            appClassPath += "_" + System.currentTimeMillis();
-        }
+        String appClassPath = app.getClasspath();
 
         CompilerConfiguration configuration = new CompilerConfiguration();
         configuration.setTargetDirectory(appClassPath);

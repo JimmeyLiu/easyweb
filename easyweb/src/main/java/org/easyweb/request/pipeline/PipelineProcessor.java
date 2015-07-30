@@ -7,7 +7,7 @@ import org.easyweb.util.EasywebLogger;
 import org.easyweb.app.deploy.DeployException;
 import org.easyweb.app.deploy.DeployPhase;
 import org.easyweb.app.deploy.process.FileProcessor;
-import org.easyweb.app.modify.ScanResult;
+import org.easyweb.app.monitor.ScanResult;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 

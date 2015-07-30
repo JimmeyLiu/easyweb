@@ -3,7 +3,7 @@ package org.easyweb.app.deploy;
 import org.easyweb.app.App;
 import org.easyweb.util.EasywebLogger;
 import org.easyweb.app.listener.AppChangeHolder;
-import org.easyweb.app.modify.ScanResult;
+import org.easyweb.app.monitor.ScanResult;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

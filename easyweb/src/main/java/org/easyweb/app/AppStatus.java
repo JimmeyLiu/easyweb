@@ -3,8 +3,8 @@ package org.easyweb.app;
 /**
  * Created by jimmey on 15-7-30.
  */
-public enum AppFileType {
+public enum AppStatus {
 
-    BIZ_GROOVY, WEB_GROOVY, OTHER
+    INIT, OK, ERROR
 
 }

@@ -9,7 +9,6 @@ import org.easyweb.profiler.Profiler;
 import org.easyweb.request.render.ControlTool;
 import org.easyweb.velocity.event.EscapeHtmlEvent;
 import org.easyweb.velocity.event.IgnoreTool;
-import org.slf4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 import org.apache.velocity.runtime.resource.util.StringResourceRepository;
@@ -54,8 +53,8 @@ public class VelocityEngine implements InitializingBean {
          */
         Properties velocityProperties = new Properties();
         velocityProperties.setProperty("directive.set.null.allowed", "true");
-        velocityProperties.setProperty("input.encoding", Configuration.getVelocityCharset());
-        velocityProperties.setProperty("output.encoding", Configuration.getVelocityCharset());
+        velocityProperties.setProperty("input.encoding", Configuration.getCodeCharset());
+        velocityProperties.setProperty("output.encoding", Configuration.getCodeCharset());
         velocityProperties.setProperty("resource.loader", "appFile,string");
 //        velocityProperties.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
 //        velocityProperties.setProperty("file.resource.loader.path", Configuration.getDeployPath());
@@ -133,7 +132,7 @@ public class VelocityEngine implements InitializingBean {
 
     public String renderTemplate(String name, String code, Map<String, Object> context) {
         StringResourceRepository vsRepository = StringResourceLoader.getRepository();
-        vsRepository.putStringResource(name, code, Configuration.getVelocityCharset());
+        vsRepository.putStringResource(name, code, Configuration.getCodeCharset());
         StringWriter writer = new StringWriter();
         renderTemplate(name, context, writer);
         return writer.toString();

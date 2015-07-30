@@ -54,7 +54,7 @@ public class GroovyObjectLoader {
                 Class<?> clazz = null;
                 if (webClass) {//对应两种不同的load方式
                     try {
-                        GroovyCodeSource codeSource = new GroovyCodeSource(file, Configuration.getVelocityCharset());
+                        GroovyCodeSource codeSource = new GroovyCodeSource(file, Configuration.getCodeCharset());
                         clazz = AppClassLoaderFactory.getAppWebClassLoader(app).parseClass(codeSource, false);
                     } catch (Exception e) {
                         EasywebLogger.error("init error:" + path, e);

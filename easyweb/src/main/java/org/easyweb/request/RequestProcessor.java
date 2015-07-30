@@ -24,7 +24,7 @@ import java.util.Map;
 @Component("ewRequestProcessor")
 public class RequestProcessor {
 
-    private static String defaultCharset = Configuration.getHttpCharset();
+    private static String defaultCharset = Configuration.getRequestCharset();
     @Resource
     PageRender pageRender;
     @Resource
