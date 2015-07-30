@@ -22,7 +22,16 @@ public class AppWatcher {
     FileAlterationMonitor monitor;
     AppDeployer appDeployer;
 
-    public AppWatcher() {
+    private static AppWatcher instance;
+
+    public static AppWatcher getInstance() {
+        if (instance == null) {
+            instance = new AppWatcher();
+        }
+        return instance;
+    }
+
+    private AppWatcher() {
         monitor = new FileAlterationMonitor(Configuration.isDevMod() ? 1000 : 10000);
         this.appDeployer = new AppDeployer();
     }
@@ -90,6 +99,14 @@ public class AppWatcher {
             first.start();
         } catch (Exception e) {
             throw new RuntimeException("FileAlterationMonitor Start Error", e);
+        }
+    }
+
+    public void stop() {
+        try {
+            monitor.stop();
+        } catch (Exception e) {
+            throw new RuntimeException("FileAlterationMonitor Stop Error", e);
         }
     }
 }

@@ -6,7 +6,6 @@ import org.easyweb.request.RequestProcessor;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.bio.SocketConnector;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Created by jimmey on 15-7-20.

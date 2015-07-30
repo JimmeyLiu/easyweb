@@ -11,15 +11,6 @@ public class Configuration {
         return "dev".equals(System.getProperty("easyweb.env"));
     }
 
-    /**
-     * 生成环境，线上、预发
-     *
-     * @return
-     */
-    public static boolean isProductMod() {
-        return !isDevMod();
-    }
-
     public static boolean isMethodInterceptor() {
         return Boolean.getBoolean("easyweb.methodInterceptor");
     }

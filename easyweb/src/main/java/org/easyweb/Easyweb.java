@@ -20,14 +20,22 @@ public class Easyweb {
         initialize(new HashMap<String, Object>());
     }
 
+    private static volatile boolean initialized = false;
+
     public static void initialize(Map<String, Object> binding) {
         //从外部注入bean
         BeanBinding.putOuterBindings(binding);
-        load(AnnotationParser.class);
-        load(DeployListener.class);
-        load(VelocityTool.class);
+        if (!initialized) {
+            initialized = true;
+            load(AnnotationParser.class);
+            load(DeployListener.class);
+            load(VelocityTool.class);
+            AppWatcher.getInstance().start();
+        }
+    }
 
-        new AppWatcher().start();
+    public static void destroy() {
+        AppWatcher.getInstance().stop();
     }
 
     private static <T> void load(Class<T> clazz) {
