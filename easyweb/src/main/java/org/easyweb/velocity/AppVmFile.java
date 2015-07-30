@@ -1,7 +1,7 @@
 package org.easyweb.velocity;
 
 import org.easyweb.Configuration;
-import org.easyweb.request.render.DirectoryUtil;
+import org.easyweb.util.DirectoryUtil;
 
 import java.io.File;
 

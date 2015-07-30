@@ -59,10 +59,10 @@ public class VelocityEngine implements InitializingBean {
         velocityProperties.setProperty("resource.loader", "appFile,string");
 //        velocityProperties.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
 //        velocityProperties.setProperty("file.resource.loader.path", Configuration.getDeployPath());
-        velocityProperties.setProperty("appFile.resource.loader.class", "com.taobao.easyweb.core.velocity.AppVmLoader");
+        velocityProperties.setProperty("appFile.resource.loader.class", "org.easyweb.velocity.AppVmLoader");
         velocityProperties.setProperty("appFile.resource.loader.cache", "true");
         velocityProperties.setProperty("appFile.resource.loader.modificationCheckInterval", "3");
-        velocityProperties.setProperty("eventhandler.referenceinsertion.class", "com.taobao.easyweb.core.velocity.event.EscapeHtmlEvent");
+        velocityProperties.setProperty("eventhandler.referenceinsertion.class", "org.easyweb.velocity.event.EscapeHtmlEvent");
 
         velocityProperties.setProperty("string.resource.loader.class", "org.apache.velocity.runtime.resource.loader.StringResourceLoader");
 

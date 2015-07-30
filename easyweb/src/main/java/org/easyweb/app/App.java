@@ -1,25 +1,20 @@
 package org.easyweb.app;
 
-import org.easyweb.request.render.DirectoryUtil;
+import org.easyweb.util.DirectoryUtil;
 
 import java.io.File;
 import java.util.List;
-import java.util.Properties;
 
 public class App {
 
     public static String APP_NAME = "app.name";
-    public static String APP_VERSION = "app.version";
-    public static String APP_PARENT_VERSION = "app.parent.version";
+    public static String APP_DOMAIN = "app.domain";
     public static String APP_WEB_PATH = "app.web.path";
+    public static String VELOCITY_NO_ESCAPE = "velocity.noescape";
     /**
      * app名称
      */
     private String name;
-    /**
-     * app版本
-     */
-    private String version;
     /**
      * web目录
      */
@@ -41,9 +36,10 @@ public class App {
      * 应用部署运行时的文件目录，和deployVersion相关
      */
     private String rootPath;
-
-    private Properties properties;
-
+    /**
+     * 不做输出转码的配置
+     */
+    private String velocityNoEscape;
 
     public String getName() {
         return name;
@@ -51,14 +47,6 @@ public class App {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
     }
 
     public String getDomain() {
@@ -69,8 +57,8 @@ public class App {
         this.domain = domain;
     }
 
-    public String getAppKey() {
-        return name + "-" + version;
+    public String getAppName() {
+        return name;
     }
 
     public String getRootPath() {
@@ -102,11 +90,11 @@ public class App {
         this.status = status;
     }
 
-    public Properties getProperties() {
-        return properties;
+    public String getVelocityNoEscape() {
+        return velocityNoEscape;
     }
 
-    public void setProperties(Properties properties) {
-        this.properties = properties;
+    public void setVelocityNoEscape(String velocityNoEscape) {
+        this.velocityNoEscape = velocityNoEscape;
     }
 }

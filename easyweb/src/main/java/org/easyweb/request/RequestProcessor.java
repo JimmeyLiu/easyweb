@@ -7,10 +7,7 @@ import org.easyweb.context.Context;
 import org.easyweb.context.ThreadContext;
 import org.easyweb.profiler.Profiler;
 import org.easyweb.request.assets.AssetsProcessor;
-import org.easyweb.request.error.ErrorResponse;
-import org.easyweb.request.error.ErrorType;
 import org.easyweb.request.pipeline.Pipeline;
-import org.easyweb.request.render.CodeRender;
 import org.easyweb.request.render.LayoutRender;
 import org.easyweb.request.render.PageRender;
 import org.easyweb.request.uri.UriTemplate;
@@ -28,19 +25,17 @@ import java.util.Map;
 public class RequestProcessor {
 
     private static String defaultCharset = Configuration.getHttpCharset();
-    @Resource(name = "ewCodeRender")
-    private CodeRender codeRender;
     @Resource
-    private PageRender pageRender;
+    PageRender pageRender;
     @Resource
-    private LayoutRender layoutRender;
+    LayoutRender layoutRender;
 
-    public void process(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void process(HttpServletRequest request, HttpServletResponse response) {
         process(request, response, false);
     }
 
 
-    public void process(HttpServletRequest request, HttpServletResponse response, boolean contextInit) throws Exception {
+    public void process(HttpServletRequest request, HttpServletResponse response, boolean contextInit) {
         process(request, response, contextInit, null);
     }
 
@@ -54,33 +49,20 @@ public class RequestProcessor {
      * @return
      * @throws IOException
      */
-    public void process(HttpServletRequest request, HttpServletResponse response, boolean contextInit, Map<String, Object> inputParams) throws Exception {
-        Throwable failed = null;
+    public void process(HttpServletRequest request, HttpServletResponse response, boolean contextInit, Map<String, Object> inputParams) {
         try {
             Profiler.start("process HTTP request");
             if (!contextInit) {
-                Profiler.enter("Init ThreadContext");
                 ThreadContext.init(request, response);
-                Profiler.release();
             }
             initMDC();
             Context context = ThreadContext.getContext();
             App app = context.getApp();
-
-            ErrorType errorType = null;
-            Throwable throwable = null;
             if (app == null) {
-                errorType = ErrorType.APP_NOT_EXIST;
-            } else if (app.getStatus() != 1) {
-                errorType = ErrorType.APP_STATUS_ERROR;
-            }
-
-            if (errorType != null) {
-                ErrorResponse.response(errorType, throwable);
+                response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
                 return;
             }
 
-            //assets文件访问
             if (AssetsProcessor.process(request, response, app)) {
                 return;
             }
@@ -93,10 +75,6 @@ public class RequestProcessor {
                 Profiler.enter("start pipeline");
                 Pipeline.invoke(context);
                 pipeline = !context.isBreakPipeline();
-            } catch (Exception e) {
-                throwable = e;
-                errorType = ErrorType.PIPELINE_ERROR;
-                pipeline = false;
             } finally {
                 Profiler.release();
             }
@@ -116,29 +94,18 @@ public class RequestProcessor {
             if (pipeline) {
                 try {
                     Profiler.enter("process page");
-                    errorType = processPage(app, request, response, inputParams);
-                } catch (SecurityException e) {//security exception throw out
-                    throw e;
-                } catch (Throwable e) {
-                    throwable = e;
-                    EasywebLogger.error("page render error", e);
-                    errorType = ErrorType.RENDER_EXCEPTION;
+                    processPage(app, request, response, inputParams);
                 } finally {
                     Profiler.release();
                 }
             }
 
-            if (errorType != null) {
-                ErrorResponse.response(errorType, throwable);
-                return;
-            }
             if (!response.isCommitted()) {
                 //正常情况下response是已经commit了的
             }
         } catch (Exception e) {
-            failed = e;
-            EasywebLogger.error("request error", e);
-            throw e;
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            EasywebLogger.error(String.format("Handler %s Error", request.getRequestURI()), e);
         } finally {
             //直接这里clean ThreadLocal的缓存
             ThreadContext.clean();
@@ -146,13 +113,10 @@ public class RequestProcessor {
             String requestString = dumpRequest(request);
             long duration = Profiler.getDuration();
             int threshold = Configuration.getProfilerThreshold();
-            if (failed != null) {
-                EasywebLogger.error(MessageFormat.format("Response of {0} failed in {1,number}ms: {2}\n{3}\n",
-                        requestString, duration, failed.getLocalizedMessage(), getDetail()));
-            } else if (duration > threshold) {
+            if (duration > threshold) {
                 EasywebLogger.warn(MessageFormat.format("Response of {0} returned in {1,number}ms\n{2}\n", requestString, duration, getDetail()));
             } else {
-                EasywebLogger.info(MessageFormat.format("Response of {0} returned in {1,number}ms\n{2}\n",
+                EasywebLogger.debug(MessageFormat.format("Response of {0} returned in {1,number}ms\n{2}\n",
                         requestString, duration, getDetail()));
             }
 
@@ -161,7 +125,7 @@ public class RequestProcessor {
 
     }
 
-    private ErrorType processPage(App app, HttpServletRequest request, HttpServletResponse response, Map<String, Object> inputParams) throws Throwable {
+    private void processPage(App app, HttpServletRequest request, HttpServletResponse response, Map<String, Object> inputParams) throws Exception {
         String uri = request.getRequestURI();
         Context context = ThreadContext.getContext();
         if (context.getForwardTo() != null) {
@@ -169,7 +133,8 @@ public class RequestProcessor {
         }
         UriTemplate uriTemplate = AppUriMapping.getUriTemplate(app, uri, request.getMethod());
         if (uriTemplate == null) {
-            return ErrorType.PAGE_NOT_FOUND;
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
         } else {
             PageMethod pageMethod = uriTemplate.getPageMethod();
             if (StringUtils.isNotBlank(pageMethod.getLayout())) {
@@ -179,7 +144,6 @@ public class RequestProcessor {
             content = layoutRender.render(content);
             response(response, content);
         }
-        return null;
     }
 
     private void response(HttpServletResponse response, String content) throws Exception {
@@ -213,15 +177,11 @@ public class RequestProcessor {
 
     private String dumpRequest(HttpServletRequest request) {
         StringBuffer buffer = new StringBuffer(request.getMethod());
-
         buffer.append(" ").append(request.getRequestURI());
-
         String queryString = StringUtils.trimToNull(request.getQueryString());
-
         if (queryString != null) {
             buffer.append("?").append(queryString);
         }
-
         return buffer.toString();
     }
 

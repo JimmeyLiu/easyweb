@@ -7,7 +7,7 @@ import org.easyweb.util.EasywebLogger;
 import org.easyweb.app.deploy.DeployException;
 import org.easyweb.app.deploy.DeployPhase;
 import org.easyweb.app.deploy.process.FileProcessor;
-import org.easyweb.app.scanner.ScanResult;
+import org.easyweb.app.modify.ScanResult;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +45,7 @@ public class PipelineProcessor extends FileProcessor {
                 List<Valve> valves = new LinkedList<Valve>();
                 String[] v = pipelines.split(",");
                 for (String name : v) {
-                    Object obj = BeanFactory.getAppBean(app.getAppKey(), name);
+                    Object obj = BeanFactory.getAppBean(app.getAppName(), name);
                     if (obj == null || !(obj instanceof Valve)) {
                         EasywebLogger.error("Processor &s Pipeline init error", app.getName());
                         throw new DeployException("pipeline " + name + " error");

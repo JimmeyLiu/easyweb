@@ -5,13 +5,14 @@ import org.easyweb.util.EasywebLogger;
 import org.easyweb.app.deploy.DeployException;
 import org.easyweb.app.deploy.DeployPhase;
 import org.easyweb.app.deploy.Deployer;
-import org.easyweb.app.scanner.ScanResult;
+import org.easyweb.app.modify.ScanResult;
 import org.easyweb.groovy.groovyobject.GroovyObjectLoader;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: jimmey/shantong
@@ -26,9 +27,11 @@ public class BizInitProcessor extends FileProcessor {
 
     @Override
     public void process(ScanResult result) throws DeployException {
+        if (!result.isRestart()) {
+            return;
+        }
+        Set<String> groovyCode = result.getBizGroovyFiles();
         App app = result.getApp();
-        List<String> groovyCode = result.getBizGroovyFiles();
-
         try {
             /**
              * 先实例化groovy对象

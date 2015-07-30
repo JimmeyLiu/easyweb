@@ -1,7 +1,7 @@
 package org.easyweb.velocity;
 
 import org.easyweb.app.App;
-import org.easyweb.app.change.AppChangeAdapter;
+import org.easyweb.app.listener.AppChangeAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,11 +28,11 @@ public class VmToolFactory extends AppChangeAdapter {
     }
 
     public void stop(App app) {
-        appVmTools.remove(app.getAppKey());
+        appVmTools.remove(app.getAppName());
     }
 
     public void failed(App app) {
-        appVmTools.remove(app.getAppKey());
+        appVmTools.remove(app.getAppName());
     }
 
 }

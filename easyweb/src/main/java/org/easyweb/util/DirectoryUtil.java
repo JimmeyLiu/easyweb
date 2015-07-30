@@ -1,4 +1,4 @@
-package org.easyweb.request.render;
+package org.easyweb.util;
 
 import org.easyweb.Configuration;
 import org.easyweb.velocity.tool.SystemUtil;
@@ -69,18 +69,6 @@ public class DirectoryUtil {
         return normalizePath(file.getParent());
     }
 
-    // public static String get
-
-    /**
-     * 根据文件的名称获取app信息
-     *
-     * @param file
-     * @return
-     */
-    public static String getAppName(File file) {
-
-        return "";
-    }
 
     public static String getAppDeployPath(String appName) {
         return Configuration.getDeployPath();

@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class StaticCache {
 
-    private static Map<String, AssetsData> map = new ConcurrentHashMap<>();
+    private static Map<String, AssetsData> map = new ConcurrentHashMap<String, AssetsData>();
 
     public static AssetsData get(String key) {
         AssetsData data = map.get(key);
@@ -39,7 +39,7 @@ public class StaticCache {
         return data;
     }
 
-    public static void remote(String key) {
+    public static void remove(String key) {
         map.remove(key);
     }
 }

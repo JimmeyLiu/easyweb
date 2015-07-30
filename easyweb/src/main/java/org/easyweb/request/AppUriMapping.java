@@ -3,10 +3,7 @@ package org.easyweb.request;
 import org.easyweb.annocation.Page;
 import org.easyweb.profiler.Profiler;
 import org.easyweb.request.uri.UriTemplate;
-import org.easyweb.annocation.Page;
 import org.easyweb.app.App;
-import org.easyweb.profiler.Profiler;
-import org.easyweb.request.uri.UriTemplate;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
@@ -67,10 +64,10 @@ public class AppUriMapping {
     }
 
     public static Map<String, UriTemplate> getAppUris(App app) {
-        Map<String, UriTemplate> list = appUriMappings.get(app.getAppKey());
+        Map<String, UriTemplate> list = appUriMappings.get(app.getAppName());
         if (list == null) {
             list = new HashMap<String, UriTemplate>();
-            appUriMappings.put(app.getAppKey(), list);
+            appUriMappings.put(app.getAppName(), list);
         }
         return list;
     }

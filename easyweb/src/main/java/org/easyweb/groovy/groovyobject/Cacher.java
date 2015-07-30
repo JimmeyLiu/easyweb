@@ -1,10 +1,9 @@
 package org.easyweb.groovy.groovyobject;
 
-import org.easyweb.app.change.ListenerPriority;
+import org.easyweb.app.listener.ListenerPriority;
 import org.easyweb.app.App;
-import org.easyweb.app.change.AppChangeAdapter;
-import org.easyweb.app.change.ListenerPriority;
-import org.easyweb.app.change.Priority;
+import org.easyweb.app.listener.AppChangeAdapter;
+import org.easyweb.app.listener.Priority;
 import groovy.lang.GroovyClassLoader;
 
 import java.io.File;

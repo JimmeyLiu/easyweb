@@ -2,8 +2,6 @@ package org.easyweb.request.assets;
 
 import org.easyweb.Configuration;
 import org.easyweb.app.App;
-import org.easyweb.Configuration;
-import org.easyweb.app.App;
 import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +20,7 @@ public class AssetsProcessor {
 
     static {
         suffixType.put("js", "application/x-javascript");
-        suffixType.put("css", "text/css;charset="+ Configuration.getHttpCharset());
+        suffixType.put("css", "text/css;charset=" + Configuration.getHttpCharset());
         suffixType.put("jpg", "image/jpeg");
         suffixType.put("jpeg", "image/jpeg");
         suffixType.put("ico", "image/ico");
@@ -31,9 +29,10 @@ public class AssetsProcessor {
         suffixType.put("swf", "application/x-shockwave-flash");
     }
 
-    private static Map<String, Long> length = new HashMap<String, Long>();
-
     public static boolean process(HttpServletRequest request, HttpServletResponse response, App app) throws Exception {
+        if (app == null) {
+            return false;
+        }
         String suffix = getSuffix(request);
         boolean p = suffixType.containsKey(suffix);
         if (!p) {
@@ -109,17 +108,10 @@ public class AssetsProcessor {
     }
 
     private static String getFullPath(String uri, App app) {
-        if (uri.startsWith("/ewassets/")) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("file:").append(app.getRootPath()).append(uri.replace("/ewassets/", "/assets/"));
-            return sb.toString();
-        } else {// assets路径为 /ide/assets/a.js
-            // /ide/assets/
-            StringBuilder sb = new StringBuilder();
-            int i = uri.indexOf(app.getName());
-            sb.append("file:").append(app.getRootPath()).append(uri.substring(i + app.getName().length(), uri.length()));
-            return sb.toString();
-        }
+        StringBuilder sb = new StringBuilder();
+        int i = uri.indexOf(app.getName());
+        sb.append("file:").append(app.getRootPath()).append(uri.substring(i + app.getName().length(), uri.length()));
+        return sb.toString();
     }
 
     private static String getSuffix(HttpServletRequest request) {

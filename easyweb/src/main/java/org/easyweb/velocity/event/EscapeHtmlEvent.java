@@ -3,9 +3,7 @@ package org.easyweb.velocity.event;
 import org.easyweb.context.ThreadContext;
 import org.easyweb.velocity.tool.StringEscapeUtil;
 import org.easyweb.app.App;
-import org.easyweb.app.change.AppChangeAdapter;
-import org.easyweb.context.ThreadContext;
-import org.easyweb.velocity.tool.StringEscapeUtil;
+import org.easyweb.app.listener.AppChangeAdapter;
 import org.apache.velocity.app.event.ReferenceInsertionEventHandler;
 import org.apache.velocity.runtime.Renderable;
 
@@ -48,21 +46,20 @@ public class EscapeHtmlEvent extends AppChangeAdapter implements ReferenceInsert
 
     @Override
     public void stop(App app) {
-        appNoescapePattern.remove(app.getAppKey());
+        appNoescapePattern.remove(app.getAppName());
     }
 
 
     @Override
     public void success(App app) {
         List<Pattern> patterns = new ArrayList<Pattern>(noescapeList);
-        Properties properties = app.getProperties();
-        String rules = properties.getProperty("velocity.noescape");
+        String rules = app.getVelocityNoEscape();
         if (rules != null) {
             for (String rule : rules.split(",")) {
                 patterns.add(Pattern.compile(rule));
             }
         }
-        appNoescapePattern.put(app.getAppKey(), patterns);
+        appNoescapePattern.put(app.getAppName(), patterns);
     }
 
     @Override
@@ -76,7 +73,7 @@ public class EscapeHtmlEvent extends AppChangeAdapter implements ReferenceInsert
             return value;
         }
 
-        List<Pattern> noescapes = appNoescapePattern.get(app.getAppKey());
+        List<Pattern> noescapes = appNoescapePattern.get(app.getAppName());
         if (noescapes == null) {
             return value;
         }

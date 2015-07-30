@@ -5,8 +5,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.StringWriter;
-import java.net.InetAddress;
 import java.util.Properties;
 
 public class Configuration {
@@ -37,8 +35,10 @@ public class Configuration {
             properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("easyweb_default.properties"));
             // 外部配置的
             Properties config = new Properties();
-            config.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("easyweb.properties"));
-
+            try {
+                config.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("easyweb.properties"));
+            } catch (Exception ignore) {
+            }
             logger.error("Load Classpath Config: " + config.toString());
 
             set(config, PATH);
@@ -117,7 +117,7 @@ public class Configuration {
     }
 
     public static String getClasspath(App app) {
-        return getClasspathRoot() + app.getAppKey();
+        return getClasspathRoot() + app.getAppName();
     }
 
     private static String getClasspathRoot() {

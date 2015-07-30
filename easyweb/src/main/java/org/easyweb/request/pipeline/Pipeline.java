@@ -1,7 +1,7 @@
 package org.easyweb.request.pipeline;
 
 import org.easyweb.app.App;
-import org.easyweb.app.change.AppChangeAdapter;
+import org.easyweb.app.listener.AppChangeAdapter;
 import org.easyweb.context.Context;
 
 import java.util.List;
@@ -17,11 +17,11 @@ public class Pipeline extends AppChangeAdapter {
     private static Map<String, List<Valve>> appValves = new ConcurrentHashMap<String, List<Valve>>();
 
     public static void initPipeline(App app, List<Valve> valves) {
-        appValves.put(app.getAppKey(), valves);
+        appValves.put(app.getAppName(), valves);
     }
 
     public static void invoke(Context context) throws Exception {
-        List<Valve> valves = appValves.get(context.getApp().getAppKey());
+        List<Valve> valves = appValves.get(context.getApp().getAppName());
         if (valves == null || valves.isEmpty()) {
             return;
         }
@@ -35,7 +35,7 @@ public class Pipeline extends AppChangeAdapter {
 
     @Override
     public void stop(App app) {
-        appValves.remove(app.getAppKey());
+        appValves.remove(app.getAppName());
     }
 
 }

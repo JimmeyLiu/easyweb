@@ -6,12 +6,13 @@ import org.easyweb.app.deploy.Deployer;
 import org.easyweb.groovy.groovyobject.GroovyObjectLoader;
 import org.easyweb.app.App;
 import org.easyweb.util.EasywebLogger;
-import org.easyweb.app.scanner.ScanResult;
+import org.easyweb.app.modify.ScanResult;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: jimmey/shantong
@@ -22,14 +23,12 @@ import java.util.List;
 public class WebProcessor extends FileProcessor {
 
     @Resource
-    private GroovyObjectLoader groovyObjectLoader;
+    GroovyObjectLoader groovyObjectLoader;
 
     @Override
     public void process(ScanResult result) throws DeployException {
         App app = result.getApp();
-        List<String> groovyCode = result.getWebGroovyFiles();
-
-
+        Set<String> groovyCode = result.getWebGroovyFiles();
         /**
          * 先实例化groovy对象
          */

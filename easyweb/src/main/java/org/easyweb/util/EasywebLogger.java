@@ -48,5 +48,15 @@ public class EasywebLogger {
         warn(String.format(fmt, args));
     }
 
+    public static void debug(String msg) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(msg);
+        }
+    }
+
+    public static void debug(String fmt, Object... args) {
+        debug(String.format(fmt, args));
+    }
+
 
 }

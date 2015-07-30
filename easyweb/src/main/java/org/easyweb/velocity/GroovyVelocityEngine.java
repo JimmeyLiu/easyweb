@@ -4,10 +4,7 @@
 
     import org.easyweb.context.Context;
     import org.easyweb.context.ThreadContext;
-    import org.easyweb.request.render.DirectoryUtil;
-    import org.easyweb.context.Context;
-    import org.easyweb.context.ThreadContext;
-    import org.easyweb.request.render.DirectoryUtil;
+    import org.easyweb.util.DirectoryUtil;
     import org.springframework.stereotype.Component;
 
     /**

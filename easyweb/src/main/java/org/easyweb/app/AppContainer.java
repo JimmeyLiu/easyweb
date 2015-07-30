@@ -1,6 +1,6 @@
 package org.easyweb.app;
 
-import org.easyweb.app.change.AppChangeAdapter;
+import org.easyweb.app.listener.AppChangeAdapter;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,19 +21,19 @@ public class AppContainer extends AppChangeAdapter {
     @Override
     public void stop(App app) {
         app.setStatus(0);
-        deployedApps.putIfAbsent(app.getAppKey(), app);
+        deployedApps.putIfAbsent(app.getAppName(), app);
     }
 
     @Override
-    public void success(App appInfo) {
-        appInfo.setStatus(1);
-        deployedApps.putIfAbsent(appInfo.getAppKey(), appInfo);
+    public void success(App app) {
+        app.setStatus(1);
+        deployedApps.putIfAbsent(app.getAppName(), app);
     }
 
     @Override
     public void failed(App app) {
         app.setStatus(2);
-        deployedApps.putIfAbsent(app.getAppKey(), app);
+        deployedApps.putIfAbsent(app.getAppName(), app);
     }
 
     @Override

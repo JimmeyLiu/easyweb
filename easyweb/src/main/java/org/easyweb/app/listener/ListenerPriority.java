@@ -1,4 +1,4 @@
-package org.easyweb.app.change;
+package org.easyweb.app.listener;
 
 import java.lang.annotation.*;
 

@@ -2,9 +2,8 @@ package org.easyweb.bean;
 
 import org.easyweb.groovy.groovyobject.EasywebClassLoader;
 import org.easyweb.app.App;
-import org.easyweb.app.change.AppChangeAdapter;
+import org.easyweb.app.listener.AppChangeAdapter;
 import org.easyweb.context.ThreadContext;
-import org.easyweb.groovy.groovyobject.EasywebClassLoader;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -57,19 +56,19 @@ public class BeanFactory extends AppChangeAdapter implements ApplicationContextA
             return;
         }
 
-        Map<String, Object> appBeans = getAppBeans(app.getAppKey());
+        Map<String, Object> appBeans = getAppBeans(app.getAppName());
         appBeans.put(name, bean);
     }
 
     public static Object getBean(String name) {
-//        Object obj = getAppBeans(ThreadContext.getContext().getApp().getAppKey()).get(name);
+//        Object obj = getAppBeans(ThreadContext.getContext().getApp().getAppName()).get(name);
 //        if (obj.getClass().isAnnotationPresent(Bean.class)) {
 //            Bean bean = obj.getClass().getAnnotation(Bean.class);
 //            if (!bean.singleton()) {
 //
 //            }
 //        }
-        return getAppBeans(ThreadContext.getContext().getApp().getAppKey()).get(name);
+        return getAppBeans(ThreadContext.getContext().getApp().getAppName()).get(name);
     }
 
     public static Object getAppBean(String appKey, String beanName) {
@@ -92,7 +91,7 @@ public class BeanFactory extends AppChangeAdapter implements ApplicationContextA
     }
 
     public static Map<String, Object> getBeans(App app) {
-        String key = app == null ? "local" : app.getAppKey();
+        String key = app == null ? "local" : app.getAppName();
         return getAppBeans(key);
     }
 
@@ -103,12 +102,12 @@ public class BeanFactory extends AppChangeAdapter implements ApplicationContextA
 
     @Override
     public void stop(App app) {
-        beans.remove(app.getAppKey());
+        beans.remove(app.getAppName());
     }
 
     @Override
     public void failed(App app) {
-        beans.remove(app.getAppKey());
+        beans.remove(app.getAppName());
     }
 
 }

@@ -36,6 +36,9 @@ public class AppLookupFactory {
         @Override
         public App lookup(String serverName, String uri) {
             String[] v = uri.split("/");
+            if (v.length < 2) {
+                return null;
+            }
             String app = v[1];
             return AppContainer.getApp(app);
         }

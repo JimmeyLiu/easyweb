@@ -1,4 +1,4 @@
-package org.easyweb.app.change;
+package org.easyweb.app.listener;
 
 /**
  * User: jimmey/shantong

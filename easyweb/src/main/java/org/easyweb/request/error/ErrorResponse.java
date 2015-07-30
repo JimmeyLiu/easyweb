@@ -65,10 +65,10 @@ public class ErrorResponse {
     }
 
     public static Map<String, PageMethod> getAppErrorPage(App app) {
-        Map<String, PageMethod> result = appErrorPages.get(app.getAppKey());
+        Map<String, PageMethod> result = appErrorPages.get(app.getAppName());
         if (result == null) {
             result = new HashMap<String, PageMethod>();
-            appErrorPages.put(app.getAppKey(), result);
+            appErrorPages.put(app.getAppName(), result);
         }
         return result;
     }
@@ -180,7 +180,7 @@ public class ErrorResponse {
         for (App app : apps) {
             AppInfo info = new AppInfo(app);
             info.setBeans(BeanFactory.getBeans(app));
-            info.setVmTools(VmToolFactory.getAppTools(app.getAppKey()));
+            info.setVmTools(VmToolFactory.getAppTools(app.getAppName()));
             info.setAppUris(AppUriMapping.getAppUris(app));
             errorInfo.addAppInfo(info);
         }

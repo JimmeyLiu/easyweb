@@ -1,10 +1,9 @@
 package org.easyweb.groovy.groovyobject;
 
-import org.easyweb.app.change.ListenerPriority;
+import org.easyweb.app.listener.ListenerPriority;
 import org.easyweb.app.App;
-import org.easyweb.app.change.AppChangeAdapter;
-import org.easyweb.app.change.ListenerPriority;
-import org.easyweb.app.change.Priority;
+import org.easyweb.app.listener.AppChangeAdapter;
+import org.easyweb.app.listener.Priority;
 import groovy.lang.GroovyClassLoader;
 
 import java.util.Map;
@@ -20,10 +19,10 @@ public class AppClassLoaderFactory extends AppChangeAdapter {
     private static Map<String, AppGroovyClassLoader> appGroovyClassLoaderMap = new ConcurrentHashMap<String, AppGroovyClassLoader>();
 
     public static AppGroovyClassLoader getAppClassLoader(App app) {
-        AppGroovyClassLoader classLoader = appGroovyClassLoaderMap.get(app.getAppKey());
+        AppGroovyClassLoader classLoader = appGroovyClassLoaderMap.get(app.getAppName());
         if (classLoader == null) {
             classLoader = new AppGroovyClassLoader(app);
-            appGroovyClassLoaderMap.put(app.getAppKey(), classLoader);
+            appGroovyClassLoaderMap.put(app.getAppName(), classLoader);
         }
         return classLoader;
     }
@@ -34,8 +33,8 @@ public class AppClassLoaderFactory extends AppChangeAdapter {
      * @param app
      */
     public static void reset(App app) {
-        appGroovyClassLoaderMap.remove(app.getAppKey());
-        appGroovyClassLoaderMap.put(app.getAppKey(), new AppGroovyClassLoader(app));
+        appGroovyClassLoaderMap.remove(app.getAppName());
+        appGroovyClassLoaderMap.put(app.getAppName(), new AppGroovyClassLoader(app));
     }
 
     public static GroovyClassLoader getAppBizClassLoader(App app) {

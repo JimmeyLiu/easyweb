@@ -127,8 +127,8 @@ public class DebugHelper {
         for (App app : apps) {
             AppInfo info = new AppInfo(app);
             info.setBeans(BeanFactory.getBeans(app));
-            info.setVmTools(VmToolFactory.getAppTools(app.getAppKey()));
-//            info.setPages(RequestMapping.getAppPages(app.getAppKey()));//fixme
+            info.setVmTools(VmToolFactory.getAppTools(app.getAppName()));
+//            info.setPages(RequestMapping.getAppPages(app.getAppName()));//fixme
             list.add(info);
         }
         return list;

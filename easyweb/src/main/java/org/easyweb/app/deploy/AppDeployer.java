@@ -2,8 +2,8 @@ package org.easyweb.app.deploy;
 
 import org.easyweb.app.App;
 import org.easyweb.util.EasywebLogger;
-import org.easyweb.app.change.AppChangeHolder;
-import org.easyweb.app.scanner.ScanResult;
+import org.easyweb.app.listener.AppChangeHolder;
+import org.easyweb.app.modify.ScanResult;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -37,9 +37,11 @@ public class AppDeployer {
     }
 
     public void deploy(App app, ScanResult result) throws DeployException {
-        //先停止app服务
-        AppChangeHolder.stop(app);
-        //checkout代码
+        //biz groovy变化才先停止app服务
+        boolean restart = result.isRestart();
+        if (restart) {
+            AppChangeHolder.stop(app);
+        }
 
         //调用初始化处理
         for (DeployPhase phase : DeployPhase.getAll()) {
@@ -55,8 +57,9 @@ public class AppDeployer {
             }
         }
 
-        //app提供服务
-        AppChangeHolder.success(app);
+        if (restart) {
+            AppChangeHolder.success(app);
+        }
     }
 
 }

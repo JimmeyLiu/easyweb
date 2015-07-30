@@ -8,7 +8,7 @@ import org.easyweb.groovy.groovyobject.GroovyObjectLoader;
 import org.easyweb.app.App;
 import org.easyweb.util.EasywebLogger;
 import org.easyweb.app.deploy.DeployPhase;
-import org.easyweb.app.scanner.ScanResult;
+import org.easyweb.app.modify.ScanResult;
 import groovy.lang.GroovyClassLoader;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.tools.FileSystemCompiler;
@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: jimmey/shantong
@@ -52,8 +53,11 @@ public class BizCompileProcessor extends FileProcessor implements InitializingBe
 
     @Override
     public void process(ScanResult result) throws DeployException {
+        if (!result.isRestart()) {
+            return;
+        }
+        Set<String> groovyCode = result.getBizGroovyFiles();
         App app = result.getApp();
-        List<String> groovyCode = result.getBizGroovyFiles();
 
         String appClassPath = Configuration.getClasspath(app);
         if (!Configuration.isDev()) {
