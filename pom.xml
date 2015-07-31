@@ -10,6 +10,7 @@
 		<module>easyweb</module>
         <module>container</module>
         <module>spring</module>
+        <module>orm</module>
     </modules>
 
     <build>

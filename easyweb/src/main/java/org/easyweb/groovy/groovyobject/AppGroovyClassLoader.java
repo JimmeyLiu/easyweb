@@ -15,7 +15,7 @@ public class AppGroovyClassLoader {
      */
     private EasywebClassLoader webClassLoader;
 
-    public AppGroovyClassLoader(App app) {
+    public AppGroovyClassLoader() {
         this.bizClassLoader = new EasywebClassLoader(false, AppGroovyClassLoader.class.getClassLoader());
         this.webClassLoader = new EasywebClassLoader(true, this.bizClassLoader);
     }

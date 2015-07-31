@@ -1,6 +1,7 @@
 package org.easyweb.container;
 
 import org.easyweb.Easyweb;
+import org.easyweb.util.EasywebLogger;
 import org.mortbay.jetty.handler.AbstractHandler;
 
 import javax.servlet.ServletException;
@@ -19,7 +20,7 @@ public class EasywebHandler extends AbstractHandler {
         try {
             Easyweb.process(request, response);
         } catch (Exception e) {
-
+            EasywebLogger.error(e);
         }
     }
 }

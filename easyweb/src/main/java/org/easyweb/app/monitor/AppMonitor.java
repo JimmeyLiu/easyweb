@@ -105,8 +105,7 @@ public class AppMonitor implements Runnable {
         Properties properties = new Properties();
         try {
             properties.load(new FileInputStream(file));
-            App app = new App();
-            app.setName(properties.getProperty(App.APP_NAME));
+            App app = new App(properties.getProperty(App.APP_NAME));
             String webPathStr = properties.getProperty(App.APP_WEB_PATH, "");
             List<String> webPaths = new ArrayList<String>();
             for (String v : webPathStr.split(",")) {
@@ -116,8 +115,9 @@ public class AppMonitor implements Runnable {
             }
             app.setWebPaths(webPaths);
             app.setRootPath(file);
-            app.setDomain(properties.getProperty(App.APP_DOMAIN));
-            app.setVelocityNoEscape(properties.getProperty(App.VELOCITY_NO_ESCAPE));
+            for (Object key : properties.keySet()) {
+                app.putConfig((String) key, properties.getProperty((String) key));
+            }
             return app;
         } catch (Exception e) {
             EasywebLogger.error("Parse " + file.getAbsolutePath() + " Error", e);

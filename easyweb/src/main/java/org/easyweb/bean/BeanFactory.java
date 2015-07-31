@@ -22,15 +22,9 @@ public class BeanFactory extends AppChangeAdapter {
          * 不是easyweb classloader加载的，不加载进bean中来
          */
         ClassLoader classLoader = bean.getClass().getClassLoader();
-        if (!(classLoader instanceof EasywebClassLoader)) {
+        if (classLoader instanceof EasywebClassLoader && ((EasywebClassLoader) classLoader).isWeb()) {
             return;
         }
-
-        EasywebClassLoader easywebClassLoader = (EasywebClassLoader) classLoader;
-        if (easywebClassLoader.isWeb()) {//是web的classloader，也不注册bean
-            return;
-        }
-
         Map<String, Object> appBeans = getAppBeans(app.getAppName());
         appBeans.put(name, bean);
     }

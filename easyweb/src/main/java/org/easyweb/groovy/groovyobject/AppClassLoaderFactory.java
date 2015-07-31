@@ -21,7 +21,7 @@ public class AppClassLoaderFactory extends AppChangeAdapter {
     public static AppGroovyClassLoader getAppClassLoader(App app) {
         AppGroovyClassLoader classLoader = appGroovyClassLoaderMap.get(app.getAppName());
         if (classLoader == null) {
-            classLoader = new AppGroovyClassLoader(app);
+            classLoader = new AppGroovyClassLoader();
             appGroovyClassLoaderMap.put(app.getAppName(), classLoader);
         }
         return classLoader;
@@ -34,7 +34,7 @@ public class AppClassLoaderFactory extends AppChangeAdapter {
      */
     public static void reset(App app) {
         appGroovyClassLoaderMap.remove(app.getAppName());
-        appGroovyClassLoaderMap.put(app.getAppName(), new AppGroovyClassLoader(app));
+        appGroovyClassLoaderMap.put(app.getAppName(), new AppGroovyClassLoader());
     }
 
     public static GroovyClassLoader getAppBizClassLoader(App app) {

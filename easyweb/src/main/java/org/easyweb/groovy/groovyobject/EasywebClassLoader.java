@@ -12,11 +12,6 @@ public class EasywebClassLoader extends GroovyClassLoader {
 
     private boolean web = false;
 
-    public EasywebClassLoader(boolean web) {
-        super();
-        this.web = web;
-    }
-
     public EasywebClassLoader(boolean web, ClassLoader parent) {
         super(parent);
         this.web = web;

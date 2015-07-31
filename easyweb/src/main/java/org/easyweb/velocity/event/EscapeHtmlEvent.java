@@ -1,11 +1,11 @@
 package org.easyweb.velocity.event;
 
-import org.easyweb.context.ThreadContext;
-import org.easyweb.velocity.tool.StringEscapeUtil;
-import org.easyweb.app.App;
-import org.easyweb.app.listener.AppChangeAdapter;
 import org.apache.velocity.app.event.ReferenceInsertionEventHandler;
 import org.apache.velocity.runtime.Renderable;
+import org.easyweb.app.App;
+import org.easyweb.app.listener.AppChangeAdapter;
+import org.easyweb.context.ThreadContext;
+import org.easyweb.velocity.tool.StringEscapeUtil;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -53,7 +53,7 @@ public class EscapeHtmlEvent extends AppChangeAdapter implements ReferenceInsert
     @Override
     public void success(App app) {
         List<Pattern> patterns = new ArrayList<Pattern>(noescapeList);
-        String rules = app.getVelocityNoEscape();
+        String rules = app.getConfig(App.VELOCITY_NO_ESCAPE);
         if (rules != null) {
             for (String rule : rules.split(",")) {
                 patterns.add(Pattern.compile(rule));

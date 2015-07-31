@@ -1,0 +1,2 @@
+org.easyweb.orm.datasource.SimpleProvider
+org.easyweb.orm.datasource.DbcpProvider

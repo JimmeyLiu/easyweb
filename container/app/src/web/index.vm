@@ -1,6 +1,9 @@
+#foreach($hello in $list)
 hello $hello.name
 <br>
 age $hello.age
+
+#end
 
 
 $controlTool.setTemplate("a.vm").add("name","Jim")

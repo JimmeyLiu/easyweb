@@ -3,12 +3,13 @@ package org.easyweb.app;
 import org.easyweb.util.DirectoryUtil;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class App {
 
     public static String APP_NAME = "app.name";
-    public static String APP_DOMAIN = "app.domain";
     public static String APP_WEB_PATH = "app.web.path";
     public static String VELOCITY_NO_ESCAPE = "velocity.noescape";
     /**
@@ -20,10 +21,6 @@ public class App {
      * web目录
      */
     private List<String> webPaths;
-    /**
-     * app域名，可以不用
-     */
-    private String domain;
     /**
      * 应用装修：
      * 0：部署中
@@ -39,26 +36,16 @@ public class App {
     private String rootPath;
 
     private String classpath;
-    /**
-     * 不做输出转码的配置
-     */
-    private String velocityNoEscape;
 
+    private Map<String, String> config;
+
+    public App(String name) {
+        this.name = name;
+        this.config = new HashMap<String, String>();
+    }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDomain() {
-        return domain;
-    }
-
-    public void setDomain(String domain) {
-        this.domain = domain;
     }
 
     public String getAppName() {
@@ -99,11 +86,16 @@ public class App {
         this.status = status;
     }
 
-    public String getVelocityNoEscape() {
-        return velocityNoEscape;
+    public String getConfig(String key) {
+        return config.get(key);
     }
 
-    public void setVelocityNoEscape(String velocityNoEscape) {
-        this.velocityNoEscape = velocityNoEscape;
+    public String getConfig(String key, String defaultValue) {
+        String v = getConfig(key);
+        return v != null ? v : defaultValue;
+    }
+
+    public void putConfig(String key, String value) {
+        this.config.put(key, value);
     }
 }
