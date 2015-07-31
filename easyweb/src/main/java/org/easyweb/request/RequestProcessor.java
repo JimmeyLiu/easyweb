@@ -3,6 +3,7 @@ package org.easyweb.request;
 import org.apache.commons.lang.StringUtils;
 import org.easyweb.Configuration;
 import org.easyweb.app.App;
+import org.easyweb.app.AppStatus;
 import org.easyweb.context.Context;
 import org.easyweb.context.ThreadContext;
 import org.easyweb.profiler.Profiler;
@@ -37,7 +38,8 @@ public class RequestProcessor {
             initMDC();
             Context context = ThreadContext.getContext();
             App app = context.getApp();
-            if (app == null) {
+            if (app == null || app.getStatus() != AppStatus.OK) {
+                EasywebLogger.error("App not found or status error");
                 response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
                 return;
             }
@@ -78,12 +80,7 @@ public class RequestProcessor {
                     Profiler.release();
                 }
             }
-
-            if (!response.isCommitted()) {
-                //正常情况下response是已经commit了的
-            }
         } finally {
-            //直接这里clean ThreadLocal的缓存
             ThreadContext.clean();
             Profiler.release();
             String requestString = dumpRequest(request);
