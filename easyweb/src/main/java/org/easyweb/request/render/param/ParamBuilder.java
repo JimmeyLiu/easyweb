@@ -24,21 +24,20 @@ import java.util.Map;
 public class ParamBuilder {
 
 
-    public static Object[] build(UriTemplate uriTemplate, Map<String, Object> inputParams) {
+    public static Object[] build(UriTemplate uriTemplate) {
         Method method = uriTemplate.getPageMethod().getMethod();
         Map<String, String> pathParams = uriTemplate.match(ThreadContext.getContext().getRequest().getRequestURI());
-        return build(method, pathParams, inputParams);
+        return build(method, pathParams);
     }
 
     /**
      * 根据request构建groovy执行的参数
      *
      * @param method
-     * @param pathParams  restful 参数
-     * @param inputParams 外部输入的参数，可以为null
+     * @param pathParams restful 参数
      * @return
      */
-    public static Object[] build(Method method, Map<String, String> pathParams, Map<String, Object> inputParams) {
+    private static Object[] build(Method method, Map<String, String> pathParams) {
         try {
             Profiler.enter("start build params");
             Class<?>[] types = method.getParameterTypes();
@@ -57,11 +56,6 @@ public class ParamBuilder {
                     v = ThreadContext.getContext();
                 } else if (typeAnnotations == null || typeAnnotations.length == 0) {
                     //没有注解，则直接注入null
-                    if (inputParams != null) {
-                        String[] names = getMethodParamNames(method);
-                        String name = names[i];
-                        v = inputParams.get(name);
-                    }
                 } else {
                     for (Annotation annotation : typeAnnotations) {
                         if (annotation instanceof Param) {
@@ -70,7 +64,7 @@ public class ParamBuilder {
                             if (StringUtils.isBlank(name)) {
                                 name = param.value();
                             }
-                            v = TypeCovert.convert(type, getParameterValues(name, inputParams), param.defaultValue());
+                            v = TypeCovert.convert(type, getParameterValues(name), param.defaultValue());
                         } else if (annotation instanceof RequestBean) {
                             v = TypeCovert.beanConvert(type);
                         } else if (annotation instanceof PathVariable) {//restful参数
@@ -93,14 +87,8 @@ public class ParamBuilder {
         }
     }
 
-    private static String[] getParameterValues(String name, Map<String, Object> inputParams) {
+    private static String[] getParameterValues(String name) {
         String[] values = ThreadContext.getContext().getRequest().getParameterValues(name);
-        if (values == null && inputParams != null) {
-            Object v = inputParams.get(name);
-            if (v != null && v instanceof String) {
-                values = new String[]{(String) v};
-            }
-        }
         return values;
     }
 

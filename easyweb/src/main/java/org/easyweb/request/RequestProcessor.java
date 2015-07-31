@@ -21,42 +21,19 @@ import java.util.Map;
 public class RequestProcessor {
 
     private static String defaultCharset = Configuration.getRequestCharset();
-    private static RequestProcessor instance;
-
-    public static RequestProcessor getInstance() {
-        if (instance == null) {
-            instance = new RequestProcessor();
-        }
-        return instance;
-    }
-
-    private RequestProcessor() {
-    }
-
-    public void process(HttpServletRequest request, HttpServletResponse response) {
-        process(request, response, false);
-    }
-
-    public void process(HttpServletRequest request, HttpServletResponse response, boolean contextInit) {
-        process(request, response, contextInit, null);
-    }
 
     /**
      * 对一个请求做处理
      *
      * @param request
      * @param response
-     * @param contextInit 是否已经初始化
-     * @param inputParams 外部输出的参数，可以为null
      * @return
      * @throws IOException
      */
-    public void process(HttpServletRequest request, HttpServletResponse response, boolean contextInit, Map<String, Object> inputParams) {
+    public void process(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
             Profiler.start("process HTTP request");
-            if (!contextInit) {
-                ThreadContext.init(request, response);
-            }
+            ThreadContext.init(request, response);
             initMDC();
             Context context = ThreadContext.getContext();
             App app = context.getApp();
@@ -96,7 +73,7 @@ public class RequestProcessor {
             if (pipeline) {
                 try {
                     Profiler.enter("process page");
-                    processPage(app, request, response, inputParams);
+                    processPage(app, request, response);
                 } finally {
                     Profiler.release();
                 }
@@ -105,9 +82,6 @@ public class RequestProcessor {
             if (!response.isCommitted()) {
                 //正常情况下response是已经commit了的
             }
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            EasywebLogger.error(String.format("Handler %s Error", request.getRequestURI()), e);
         } finally {
             //直接这里clean ThreadLocal的缓存
             ThreadContext.clean();
@@ -127,7 +101,7 @@ public class RequestProcessor {
 
     }
 
-    private void processPage(App app, HttpServletRequest request, HttpServletResponse response, Map<String, Object> inputParams) throws Exception {
+    private void processPage(App app, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String uri = request.getRequestURI();
         Context context = ThreadContext.getContext();
         if (context.getForwardTo() != null) {
@@ -142,7 +116,7 @@ public class RequestProcessor {
             if (StringUtils.isNotBlank(pageMethod.getLayout())) {
                 ThreadContext.getContext().setLayout(pageMethod.getLayout());
             }
-            String content = CodeRender.getInstance().renderPage(uriTemplate, inputParams);
+            String content = CodeRender.getInstance().renderPage(uriTemplate);
             response(response, content);
         }
     }

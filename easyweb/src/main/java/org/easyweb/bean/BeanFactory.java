@@ -10,8 +10,12 @@ import java.util.Map;
 
 public class BeanFactory extends AppChangeAdapter {
 
-
+    private static final String NATIVE = "NATIVE";
     private static Map<String, Map<String, Object>> beans = new HashMap<String, Map<String, Object>>();
+
+    public static void registerNativeBeans(Map<String, Object> beans) {
+        getAppBeans(NATIVE).putAll(beans);
+    }
 
     public static void register(App app, String name, Object bean) {
         /**
@@ -32,13 +36,6 @@ public class BeanFactory extends AppChangeAdapter {
     }
 
     public static Object getBean(String name) {
-//        Object obj = getAppBeans(ThreadContext.getContext().getApp().getAppName()).get(name);
-//        if (obj.getClass().isAnnotationPresent(Bean.class)) {
-//            Bean bean = obj.getClass().getAnnotation(Bean.class);
-//            if (!bean.singleton()) {
-//
-//            }
-//        }
         return getAppBeans(ThreadContext.getContext().getApp().getAppName()).get(name);
     }
 
@@ -51,18 +48,16 @@ public class BeanFactory extends AppChangeAdapter {
         Map<String, Object> appBeans = beans.get(appKey);
         if (appBeans == null) {
             appBeans = new HashMap<String, Object>();
-
             beans.put(appKey, appBeans);
         }
-        if (!"local".equals(appKey)) {
-            appBeans.putAll(getAppBeans("local"));
+        if (!NATIVE.equals(appKey)) {
+            appBeans.putAll(getAppBeans(NATIVE));
         }
-
         return appBeans;
     }
 
     public static Map<String, Object> getBeans(App app) {
-        String key = app == null ? "local" : app.getAppName();
+        String key = app == null ? NATIVE : app.getAppName();
         return getAppBeans(key);
     }
 

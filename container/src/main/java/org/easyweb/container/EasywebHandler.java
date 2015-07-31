@@ -1,6 +1,6 @@
-package org.easyweb.container.handler;
+package org.easyweb.container;
 
-import org.easyweb.request.RequestProcessor;
+import org.easyweb.Easyweb;
 import org.mortbay.jetty.handler.AbstractHandler;
 
 import javax.servlet.ServletException;
@@ -10,14 +10,16 @@ import java.io.IOException;
 
 public class EasywebHandler extends AbstractHandler {
 
-    RequestProcessor processor;
 
-    public EasywebHandler(RequestProcessor processor) {
-        this.processor = processor;
+    public EasywebHandler() {
     }
 
     @Override
     public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch) throws IOException, ServletException {
-        processor.process(request, response);
+        try {
+            Easyweb.process(request, response);
+        } catch (Exception e) {
+
+        }
     }
 }

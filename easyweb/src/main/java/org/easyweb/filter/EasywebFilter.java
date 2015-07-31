@@ -1,7 +1,6 @@
 package org.easyweb.filter;
 
 import org.easyweb.Easyweb;
-import org.easyweb.request.RequestProcessor;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +19,11 @@ public class EasywebFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        RequestProcessor.getInstance().process((HttpServletRequest) request, (HttpServletResponse) response);
+        try {
+            Easyweb.process((HttpServletRequest) request, (HttpServletResponse) response);
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
     }
 
     @Override

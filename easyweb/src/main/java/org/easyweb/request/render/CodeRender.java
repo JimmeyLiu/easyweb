@@ -43,10 +43,10 @@ public class CodeRender {
         return instance;
     }
 
-    public String renderPage(UriTemplate uriTemplate, Map<String, Object> inpurtParams) throws Exception {
+    public String renderPage(UriTemplate uriTemplate) throws Exception {
         StringWriter writer = new StringWriter();
         PageMethod pageMethod = uriTemplate.getPageMethod();
-        render(pageMethod.getFile(), pageMethod.getMethod().getName(), ParamBuilder.build(uriTemplate, inpurtParams), writer);
+        render(pageMethod.getFile(), pageMethod.getMethod().getName(), ParamBuilder.build(uriTemplate), writer);
         return renderLayout(writer.toString());
     }
 

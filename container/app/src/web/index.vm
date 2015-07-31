@@ -4,3 +4,6 @@ age $hello.age
 
 
 $controlTool.setTemplate("a.vm").add("name","Jim")
+
+<br>
+$say
