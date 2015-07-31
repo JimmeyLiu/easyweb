@@ -1,4 +1,4 @@
-package org.easyweb.app.monitor.impl;
+package org.easyweb.app.monitor;
 
 import java.io.File;
 import java.io.Serializable;
@@ -18,18 +18,10 @@ public class FileEntry implements Serializable {
     private boolean directory;
     private long lastModified;
     private long length;
+    private AppFileType fileType;
 
     /**
-     * Construct a new monitor for a specified {@link File}.
-     *
-     * @param file The file being monitored
-     */
-    public FileEntry(File file) {
-        this((FileEntry) null, file);
-    }
-
-    /**
-     * Construct a new monitor for a specified {@link File}.
+     * Construct a new monitor for a specified {@link java.io.File}.
      *
      * @param parent The parent
      * @param file   The file being monitored
@@ -44,7 +36,7 @@ public class FileEntry implements Serializable {
     }
 
     /**
-     * Refresh the attributes from the {@link File}, indicating
+     * Refresh the attributes from the {@link java.io.File}, indicating
      * whether the file has changed.
      * <p/>
      * This implementation refreshes the <code>name</code>, <code>exists</code>,
@@ -231,5 +223,13 @@ public class FileEntry implements Serializable {
      */
     public void setDirectory(boolean directory) {
         this.directory = directory;
+    }
+
+    public AppFileType getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(AppFileType fileType) {
+        this.fileType = fileType;
     }
 }

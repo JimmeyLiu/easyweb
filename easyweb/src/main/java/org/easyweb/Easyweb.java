@@ -1,7 +1,7 @@
 package org.easyweb;
 
 import org.easyweb.app.deploy.DeployListener;
-import org.easyweb.app.monitor.AppWatcher;
+import org.easyweb.app.monitor.AppMonitor;
 import org.easyweb.bean.BeanFactory;
 import org.easyweb.groovy.annotation.AnnotationParser;
 import org.easyweb.request.RequestProcessor;
@@ -36,7 +36,7 @@ public class Easyweb {
             load(DeployListener.class);
             load(VelocityTool.class);
             processor = new RequestProcessor();
-            AppWatcher.getInstance().start();
+            AppMonitor.getInstance().start();
         }
     }
 
@@ -48,7 +48,7 @@ public class Easyweb {
     }
 
     public static void destroy() {
-        AppWatcher.getInstance().stop();
+        AppMonitor.getInstance().stop();
     }
 
     private static <T> void load(Class<T> clazz) {
