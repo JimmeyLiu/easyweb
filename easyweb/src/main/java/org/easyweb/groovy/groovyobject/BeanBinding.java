@@ -3,12 +3,7 @@ package org.easyweb.groovy.groovyobject;
 import groovy.lang.Binding;
 import org.easyweb.bean.BeanFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class BeanBinding extends Binding {
-
-    public static Map<String, Object> beans = new HashMap<String, Object>();
 
     @Override
     public Object getVariable(String name) {
@@ -29,15 +24,7 @@ public class BeanBinding extends Binding {
     }
 
     private Object getBean(String name) {
-        Object obj = BeanFactory.getBean(name);
-        if (obj == null) {
-            obj = beans.get(name);
-        }
-        return obj;
-    }
-
-    public static void putOuterBindings(Map<String, Object> map) {
-        beans.putAll(map);
+        return BeanFactory.getBean(name);
     }
 
 }

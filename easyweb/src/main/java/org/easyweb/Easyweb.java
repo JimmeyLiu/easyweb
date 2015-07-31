@@ -4,7 +4,6 @@ import org.easyweb.app.deploy.DeployListener;
 import org.easyweb.app.monitor.AppWatcher;
 import org.easyweb.bean.BeanFactory;
 import org.easyweb.groovy.annotation.AnnotationParser;
-import org.easyweb.groovy.groovyobject.BeanBinding;
 import org.easyweb.request.RequestProcessor;
 import org.easyweb.velocity.VelocityTool;
 
@@ -30,7 +29,6 @@ public class Easyweb {
 
     public static void initialize(Map<String, Object> beans) {
         //从外部注入bean
-        BeanBinding.putOuterBindings(beans);
         BeanFactory.registerNativeBeans(beans);
         if (!initialized) {
             initialized = true;
