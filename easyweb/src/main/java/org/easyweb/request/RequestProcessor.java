@@ -39,7 +39,7 @@ public class RequestProcessor {
             Context context = ThreadContext.getContext();
             App app = context.getApp();
             if (app == null || app.getStatus() != AppStatus.OK) {
-                EasywebLogger.error("App not found or status error");
+                EasywebLogger.error("App not found or status error, %s",request.getRequestURI());
                 response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
                 return;
             }
@@ -54,7 +54,7 @@ public class RequestProcessor {
             boolean pipeline = true;
             try {
                 Profiler.enter("start pipeline");
-                Pipeline.invoke(context);
+                Pipeline.invoke();
                 pipeline = !context.isBreakPipeline();
             } finally {
                 Profiler.release();

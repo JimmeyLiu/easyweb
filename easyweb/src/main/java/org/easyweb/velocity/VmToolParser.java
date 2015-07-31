@@ -8,16 +8,15 @@ import org.easyweb.groovy.annotation.AnnotationParser;
 import java.io.File;
 import java.lang.annotation.Annotation;
 
-public class VmToolParser extends AnnotationParser {
+public class VmToolParser extends AnnotationParser<VmTool> {
 
     @Override
-    public boolean isParse(Annotation annotation) {
+    public boolean match(Annotation annotation) {
         return annotation instanceof VmTool;
     }
 
     @Override
-    public void parse(App app, Annotation annotation, File file, Object target, GroovyObject groovyObject) {
-        VmTool vmTool = (VmTool) annotation;
+    public void parse(App app, VmTool vmTool, File file, Object target, GroovyObject groovyObject) {
         if (StringUtils.isNotBlank(vmTool.value())) {
             VmToolFactory.putAppTool(app.getAppName(), vmTool.value(), groovyObject);
         }

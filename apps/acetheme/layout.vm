@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<title>Alfa平台</title>
+
+	<link href="/acetheme/assets/ace/css/bootstrap.min.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="/acetheme/assets/ace/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="/acetheme/assets/ace/css/ace.min.css"/>
+	<link rel="stylesheet" href="/acetheme/assets/ace/css/chosen.css"/>
+	<link rel="stylesheet" href="/acetheme/assets/ace/css/ace-rtl.min.css"/>
+	<link rel="stylesheet" href="/acetheme/assets/ace/css/ace-skins.min.css"/>
+	<link rel="stylesheet" href="/acetheme/assets/ace/css/datepicker.css"/>
+	<link rel="stylesheet" href="/acetheme/assets/ace/css/daterangepicker.css"/>
+	<link rel="stylesheet" href="/acetheme/assets/datetimepicker/bootstrap-datetimepicker.min.css"/>
+
+	<script src="/acetheme/assets/ace/js/jquery-2.0.3.min.js"></script>
+	<script src="/acetheme/assets/ace/js/ace-extra.min.js"></script>
+	<script src="/acetheme/assets/ace/js/ace-elements.min.js"></script>
+	<script src="/acetheme/assets/ace/js/ace.min.js"></script>
+	<script src="/acetheme/assets/ace/js/bootstrap-tag.min.js"></script>
+
+	<script src="/acetheme/assets/highcharts/js/highcharts.js"></script>
+	<script src="/acetheme/assets/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+	<script src="/acetheme/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+	<script src="/acetheme/assets/ace/js/chosen.jquery.min.js"></script>
+	<script src="/acetheme/assets/ace/js/date-time/moment.min.js"></script>
+	<script src="/acetheme/assets/ace/js/date-time/daterangepicker.min.js"></script>
+	<script>
+        Highcharts.setOptions({
+            global : {
+                useUTC : false
+            }
+        });
+
+
+
+	</script>
+	<style>
+		.page-content{
+		margin-top:80px;
+		}
+	</style>
+</head>
+
+<body style="navbar-fixed breadcrumbs-fixed">
+<div class="navbar navbar-default navbar-fixed-top" id="navbar">
+
+	<div class="navbar-container" id="navbar-container">
+		<div class="navbar-header pull-left">
+			<div class="navbar-brand" style="padding-top:15px;padding-bottom:1px">
+				<span style="font-size:30px;margin-right:-4px">A</span>
+				<span style="font-size:28px">lfa</span>
+				<!--<img src="/shared/assets/img/laiwang.png" height="34"/>-->
+			</div>
+			<!-- /.brand -->
+		</div>
+		<!-- /.navbar-header -->
+
+		<div class="navbar-header pull-right" role="navigation">
+			<ul class="nav ace-nav">
+				<li class="light-blue">
+					<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+						<img class="nav-user-photo" src="/shared/assets/ace/avatars/avatar2.png"/>
+                            <span class="user-info">
+                                <small>Welcome,</small>
+                                $_user.name
+                            </span>
+					</a>
+				</li>
+			</ul>
+			<!-- /.ace-nav -->
+		</div>
+		<!-- /.navbar-header -->
+	</div>
+	<!-- /.container -->
+</div>
+
+<div class="main-container" id="main-container">
+	<div class="main-container-inner">
+		<a class="menu-toggler" id="menu-toggler" href="#">
+			<span class="menu-text"></span>
+		</a>
+
+		<div class="sidebar sidebar-fixed" id="sidebar">
+			<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+				<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large" style="text-align:left">
+					<!--<button>-->
+					<!--</button>-->
+					<i class="icon-sitemap" style="font-size:20px;padding-left:12px"></i>
+					<span style="font-size:18px;padding-left:5px">导航栏</span>
+				</div>
+
+			</div>
+			<ul class="nav nav-list">
+				<li>
+					<a href="/alfa/index">
+						<i class="icon-dashboard"></i>
+						<span class="menu-text"> 控制台 </span>
+					</a>
+				</li>
+
+				<li>
+					<a href="/report" class="dropdown-toggle"><!---->
+						<i class="icon-bar-chart"></i>
+						<span class="menu-text"> 数据报表</span>
+						<b class="arrow icon-angle-down"></b>
+					</a>
+					<ul class="submenu">
+						$pageTools.include("/report/pages")
+						<li>
+							<a href="/report/chart">
+								<i class="icon-double-angle-right"></i>
+								图表管理
+							</a>
+						</li>
+						<li>
+							<a href="/report/apiManager">
+								<i class="icon-double-angle-right"></i>
+								API管理
+							</a>
+						</li>
+					</ul>
+				</li>
+
+				<li>
+					<a href="#" class="dropdown-toggle">
+						<i class="icon-list"></i>
+						<span class="menu-text"> 服务接入 </span>
+						<b class="arrow icon-angle-down"></b>
+					</a>
+					<ul class="submenu">
+						<li>
+							<a href="/alfa/vhost">
+								<i class="icon-double-angle-right"></i>
+								接入管理
+							</a>
+						</li>
+						<li>
+							<a href="/debug">
+								<i class="icon-double-angle-right"></i>
+								调试工具
+							</a>
+						</li>
+						<li>
+							<a href="/alfa/vhost/docs">
+								<i class="icon-double-angle-right"></i>
+								接入文档
+							</a>
+						</li>
+
+					</ul>
+				</li>
+
+				<li>
+					<a href="#" class="dropdown-toggle">
+						<i class="icon-hand-right"></i>
+						<span class="menu-text">调度管理</span>
+						<b class="arrow icon-angle-down"></b>
+					</a>
+					<ul class="submenu">
+						<li>
+							<a href="/alfa/aladdin">
+								<i class="icon-double-angle-right"></i>
+								VIP列表
+							</a>
+						</li>
+						<li>
+							<a href="/alfa/aladdin/abtest">
+								<i class="icon-double-angle-right"></i>
+								调度控制
+							</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="/alfa/log" class="dropdown-toggle">
+						<i class="icon-search"></i>
+						<span class="menu-text">日志查询</span>
+						<b class="arrow icon-angle-down"></b>
+					</a>
+					<ul class="submenu">
+						<li>
+							<a href="/tools/sdkLog">
+								<i class="icon-double-angle-right"></i>
+								SDK日志
+							</a>
+						</li>
+						<li>
+							<a href="/tools/lwLog">
+								<i class="icon-double-angle-right"></i>
+								来往日志
+							</a>
+						</li>
+						<li>
+							<a href="/tools/iframe?url=http://fireeye.wukong.laiwang.com/">
+								<i class="icon-double-angle-right"></i>
+								火眼日志
+							</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="#" class="dropdown-toggle">
+						<i class="icon-th"></i>
+                            <span class="menu-text">
+                                工具箱
+                            </span>
+						<b class="arrow icon-angle-down"></b>
+					</a>
+
+					<ul class="submenu">
+						<li>
+							<a href="/tools/brick">
+								<i class="icon-double-angle-right"></i>
+								常用工具
+							</a>
+						</li>
+						<li>
+							<a href="/localization">
+								<i class="icon-double-angle-right"></i>
+								本地化管理
+							</a>
+						</li>
+						<li>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-double-angle-right"></i>
+								网络工具
+								<b class="arrow icon-angle-down"></b>
+							</a>
+							<ul class="submenu">
+								<li>
+									<a href="/netool/atcd">
+										<i class="icon-double-angle-right"></i>
+										模拟弱网
+									</a>
+								</li>
+								<li>
+									<a href="/netool/pcap">
+										<i class="icon-double-angle-right"></i>
+										PCAP分析
+									</a>
+								</li>
+								<li>
+									<a href="/netool/analyze">
+										<i class="icon-double-angle-right"></i>
+										解析插件
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="/tools/jsonformat">
+								<i class="icon-double-angle-right"></i>
+								JSON格式化
+							</a>
+						</li>
+						<li>
+							<a href="/tools/iframe?url=http://laiwang.alibaba-inc.com/query_ip">
+								<i class="icon-double-angle-right"></i>
+								服务器查询
+							</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="#" class="dropdown-toggle">
+						<i class="icon-book"></i>
+                        <span class="menu-text">
+                            外部站点
+                        </span>
+
+						<b class="arrow icon-angle-down"></b>
+					</a>
+
+					<ul class="submenu">
+						<li>
+							<a href="/tools/iframe?url=http://aops.alibaba-inc.com/workflow/account/new/&min=true">
+								<i class="icon-double-angle-right"></i>
+								机器权限申请
+							</a>
+						</li>
+						<li>
+							<a href="/tools/iframe?url=http://aone.alibaba-inc.com/aone2/myaone&min=true">
+								<i class="icon-double-angle-right"></i>
+								Aone2平台
+							</a>
+						</li>
+						<li>
+							<a href="/tools/iframe?url=http://monitor.alibaba-inc.com/monitor/monitoritem/monitorItemList.htm?nodeId=m_2174772&deviceType=SERVER">
+								<i class="icon-double-angle-right"></i>
+								AliMonitor
+							</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<script>
+                $(function(){
+                    function listMenus(list,obj){
+                        obj.find('ul.children('li.each(function(i,m){
+                            var a = $(m).find('a;
+                            if(a){
+                                list.push([a.attr('href,$(m)]);
+                            }
+                            listMenus(list,$(m));
+                        });
+                    }
+
+                    function activeParent(li){
+                        var p = li.parent().parent();
+                        if(p[0].tagName == 'LI{
+                            p.addClass('open active;
+                            activeParent(p);
+                        }
+                    }
+
+
+                    var list = [];
+                    listMenus(list,$('.sidebar,null);
+                    var uri = window.location.pathname;
+                    var may = null;
+                    var hit = false;
+                    for(var i in list){
+                        var href = list[i][0];
+                        var li = list[i][1];
+                        if(href == uri){
+                            hit = true;
+                            li.addClass('active;
+                            activeParent(li);
+                            break;
+                        }else if(uri.indexOf(href)>-1){
+                            may = li;
+                        }
+                    }
+                    if(!hit && may){
+                        may.addClass('active;
+                        activeParent(may);
+                    }
+
+                    $(".line-chart-datetime").datetimepicker({
+                        format: "yyyy-mm-dd hh:ii:ss",
+                        autoclose: true,
+                        todayBtn: true,
+                        startDate: "2013-02-14 10:00",
+                        minuteStep: 10
+                    });
+
+                    $(".day-datetime").datepicker({
+                        format: "yyyy-mm-dd",
+                        autoclose: true
+                    });
+                });
+
+
+
+			</script>
+			<!-- /.nav-list -->
+
+			<div class="sidebar-collapse" id="sidebar-collapse">
+				<i class="icon-double-angle-left" data-icon1="icon-double-angle-left"
+				   data-icon2="icon-double-angle-right"></i>
+			</div>
+		</div>
+
+		<div class="main-content">
+			<div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
+				<ul class="breadcrumb">
+					<li>
+						<i class="icon-home home-icon"></i>
+						<a href="/alfa/index">Home</a>
+					</li>
+					#if($breadCrumb)
+					#foreach($b in $breadCrumb.keySet())
+					<li #if(
+					"$breadCrumb.get($b)"=="#")class=active #end >
+					<a href="$breadCrumb.get($b)">$b</a>
+					</li>
+					#end
+					#end
+				</ul>
+				<!-- .breadcrumb -->
+			</div>
+
+			<div class="page-content" style="margin-left:20px;padding-top:20px">
+				$!screen_placeholder
+			</div>
+		</div>
+
+		<!-- /.main-container-inner -->
+
+		<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+			<i class="icon-double-angle-up icon-only bigger-110"></i>
+		</a>
+	</div>
+	<!-- /.main-container -->
+</div>
+<script src="/acetheme/assets/ace/js/bootstrap.min.js"></script>
+<script src="/acetheme/assets/ace/js/typeahead-bs2.min.js"></script>
+
+</body>
+</html>

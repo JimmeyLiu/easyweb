@@ -16,17 +16,23 @@ import java.util.*;
  */
 public class AssetsProcessor {
 
-    public static Map<String, String> suffixType = new HashMap<String, String>();
+    public static Map<String, String> SUFFIX_TYPES = new HashMap<String, String>();
 
     static {
-        suffixType.put("js", "application/x-javascript");
-        suffixType.put("css", "text/css;charset=" + Configuration.getRequestCharset());
-        suffixType.put("jpg", "image/jpeg");
-        suffixType.put("jpeg", "image/jpeg");
-        suffixType.put("ico", "image/ico");
-        suffixType.put("png", "image/png");
-        suffixType.put("gif", "image/gif");
-        suffixType.put("swf", "application/x-shockwave-flash");
+        SUFFIX_TYPES.put("js", "application/x-javascript");
+        SUFFIX_TYPES.put("css", "text/css;charset=" + Configuration.getRequestCharset());
+        SUFFIX_TYPES.put("jpg", "image/jpeg");
+        SUFFIX_TYPES.put("jpeg", "image/jpeg");
+        SUFFIX_TYPES.put("ico", "image/ico");
+        SUFFIX_TYPES.put("png", "image/png");
+        SUFFIX_TYPES.put("gif", "image/gif");
+        SUFFIX_TYPES.put("swf", "application/x-shockwave-flash");
+        SUFFIX_TYPES.put("otf", "font/otf");
+        SUFFIX_TYPES.put("eot", "font/eot");
+        SUFFIX_TYPES.put("svg", "font/svg");
+        SUFFIX_TYPES.put("ttf", "font/ttf");
+        SUFFIX_TYPES.put("woff", "font/woff");
+        SUFFIX_TYPES.put("woff2", "font/woff2");
     }
 
     public static boolean process(HttpServletRequest request, HttpServletResponse response, App app) throws Exception {
@@ -34,7 +40,7 @@ public class AssetsProcessor {
             return false;
         }
         String suffix = getSuffix(request);
-        boolean p = suffixType.containsKey(suffix);
+        boolean p = SUFFIX_TYPES.containsKey(suffix);
         if (!p) {
             return false;
         }
@@ -90,7 +96,7 @@ public class AssetsProcessor {
 //        response.setDateHeader("Expires", expiry);
         response.setHeader("Content-Length", len + "");
 //        response.setDateHeader("Last-Modified", System.currentTimeMillis());
-        response.setHeader("Content-Type", suffixType.get(suffix));
+        response.setHeader("Content-Type", SUFFIX_TYPES.get(suffix));
         response.setStatus(HttpServletResponse.SC_OK);
         response.setHeader("Pragma", "publish");
 //        response.addHeader("Cache-Control", "max-age=" + CACHE_DURATION_IN_SECOND);

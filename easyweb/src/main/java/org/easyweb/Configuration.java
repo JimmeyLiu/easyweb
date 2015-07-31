@@ -1,6 +1,13 @@
 package org.easyweb;
 
+import org.easyweb.util.DirectoryUtil;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class Configuration {
+
+    public static String DEPLOY_PATH = "easyweb.deploy";
 
     /**
      * 开发环境
@@ -15,16 +22,20 @@ public class Configuration {
         return Boolean.getBoolean("easyweb.methodInterceptor");
     }
 
-    private static String deployPath;
+    private static Set<String> deployPaths;
 
-    public static String getDeployPath() {
-        if (deployPath == null) {
-            deployPath = System.getProperty("easyweb.deployPath", System.getProperty("user.home") + "/easyweb/apps");
-            if (!deployPath.endsWith("/")) {
-                deployPath += "/";
+    public static Set<String> getDeployPaths() {
+        if (deployPaths == null) {
+            String deployPath = System.getProperty(DEPLOY_PATH);
+            if (deployPath == null) {
+                throw new RuntimeException("System Property easyweb.deploy Required");
+            }
+            deployPaths = new HashSet<String>();
+            for (String v : deployPath.split(",")) {
+                deployPaths.add(DirectoryUtil.normalizePath(v.trim()));
             }
         }
-        return deployPath;
+        return deployPaths;
     }
 
     public static int getProfilerThreshold() {

@@ -21,12 +21,8 @@ class Index {
 
     Logger logger = LoggerFactory.getLogger("hello")
 
-    @Page(url = "/demo/index")
+    @Page(url = "/demo/index", layout = "acetheme:layout.vm")
     def page(@RequestBean Hello hello, Context context) {
-
-        myDAO.insert(hello);
-
-        context.putContext("list", myDAO.findAll())
         return vm.render("index.vm")
     }
 

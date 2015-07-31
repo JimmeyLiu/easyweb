@@ -3,9 +3,9 @@ package org.easyweb.request.pipeline;
 import org.easyweb.app.App;
 import org.easyweb.app.listener.AppChangeAdapter;
 import org.easyweb.context.Context;
+import org.easyweb.context.ThreadContext;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -14,22 +14,34 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Pipeline extends AppChangeAdapter {
 
-    private static Map<String, List<Valve>> appValves = new ConcurrentHashMap<String, List<Valve>>();
+    private static Map<String, List<ValveObject>> appValves = new ConcurrentHashMap<String, List<ValveObject>>();
 
-    public static void initPipeline(App app, List<Valve> valves) {
-        appValves.put(app.getAppName(), valves);
+    public static void addValve(App app, ValveObject valveObject) {
+        List<ValveObject> list = appValves.get(app.getAppName());
+        if (list == null) {
+            list = new ArrayList<ValveObject>();
+            appValves.put(app.getAppName(), list);
+        }
+        list.add(valveObject);
+        Collections.sort(list, new Comparator<ValveObject>() {
+            @Override
+            public int compare(ValveObject o1, ValveObject o2) {
+                return o1.order() > o2.order() ? 1 : -1;
+            }
+        });
     }
 
-    public static void invoke(Context context) throws Exception {
-        List<Valve> valves = appValves.get(context.getApp().getAppName());
-        if (valves == null || valves.isEmpty()) {
+    public static void invoke() {
+        App app = ThreadContext.getContext().getApp();
+        if (app == null) {
             return;
         }
-        for (Valve valve : valves) {
-            if (context.isBreakPipeline()) {
-                return;
-            }
-            valve.invoke(context);
+        List<ValveObject> list = appValves.get(app.getAppName());
+        if (list == null) {
+            return;
+        }
+        for (ValveObject valve : list) {
+            valve.invoke();
         }
     }
 

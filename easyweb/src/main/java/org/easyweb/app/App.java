@@ -30,6 +30,7 @@ public class App {
      */
     private AppStatus status = AppStatus.INIT;
 
+    private String rootParent;
     /**
      * 应用部署运行时的文件目录，和deployVersion相关
      */
@@ -63,7 +64,12 @@ public class App {
      */
     public void setRootPath(File configFile) {
         this.rootPath = DirectoryUtil.getFileParentPath(configFile);
+        this.rootParent = DirectoryUtil.getFileParentPath(configFile.getParentFile());
         this.classpath = this.rootPath + "/classes";
+    }
+
+    public String getRootParent() {
+        return rootParent;
     }
 
     public String getClasspath() {

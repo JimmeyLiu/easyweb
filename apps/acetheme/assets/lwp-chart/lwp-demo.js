@@ -1,0 +1,18 @@
+$('#id').lwpChart({
+    url:'',
+    dataType:'json',
+    chartType:'line|pie|column|map|columnPercent',
+    fixedParams:{vhost:'WK'},
+    paramConfig:[
+        {
+            name:'os',
+            input:'text',
+            config:''
+        },
+        {
+            name:'version',
+            input:'select',
+            config:'a2.2.5,a2.3.0'
+        }
+    ]
+})

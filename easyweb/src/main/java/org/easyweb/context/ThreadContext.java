@@ -41,6 +41,10 @@ public class ThreadContext {
         getContext().setApp(app);
     }
 
+    public static App getApp() {
+        return getContext().getApp();
+    }
+
     /**
      * 给外面put上下文
      *

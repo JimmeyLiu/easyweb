@@ -5,6 +5,7 @@ import org.easyweb.app.monitor.AppMonitor;
 import org.easyweb.bean.BeanFactory;
 import org.easyweb.groovy.annotation.AnnotationParser;
 import org.easyweb.request.RequestProcessor;
+import org.easyweb.util.EasywebLogger;
 import org.easyweb.velocity.VelocityTool;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +55,10 @@ public class Easyweb {
     private static <T> void load(Class<T> clazz) {
         ServiceLoader<T> loader = ServiceLoader.load(clazz);
         Iterator<T> it = loader.iterator();
-        while (it.hasNext()) it.next();
+        while (it.hasNext()) {
+            T t = it.next();
+            EasywebLogger.warn("[Service] Load " + t.toString());
+        }
     }
 
 }

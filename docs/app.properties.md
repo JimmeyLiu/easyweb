@@ -14,7 +14,6 @@
 * app.name：应用名称配置，必须
 * app.web.path：web相对路径
 * velocity.noescape：velocity配置不做转义的工具类
-* pipeline.valves：请求正式处理之前可以通过实现Valve接口做请求预处理，值为bean名称，多个以英文逗号分隔
 
 ### ORM数据源相关配置
 

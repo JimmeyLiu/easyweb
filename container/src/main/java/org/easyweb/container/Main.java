@@ -14,17 +14,15 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        System.setProperty("easyweb.deployPath", "/Users/jimmey/workspace/platform/easyweb/apps");
         System.setProperty("easyweb.env", "dev");
         System.setProperty("org.mortbay.util.URI.charset", "utf-8");
         Map<String, Object> beans = new HashMap<String, Object>();
-        beans.put("beanService", new BeanService());
         Easyweb.initialize(beans);
 
         Server server = new Server();
         server.addHandler(new EasywebHandler());
         SocketConnector connector = new SocketConnector();
-        connector.setPort(8080);
+        connector.setPort(Integer.getInteger("port", 8080));
         server.setConnectors(new Connector[]{connector});
         server.start();
     }

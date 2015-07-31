@@ -1,9 +1,6 @@
 package org.easyweb.velocity;
 
-import org.easyweb.Configuration;
-import org.easyweb.util.DirectoryUtil;
-
-import java.io.File;
+import org.easyweb.context.ThreadContext;
 
 /**
  * User: jimmey/shantong
@@ -14,42 +11,12 @@ import java.io.File;
  */
 public class AppVmFile {
 
-    /**
-     * 传入的是完整的vm路径，这里做替换
-     *
-     * @param vmFile
-     * @return
-     */
-    public static String getTemplateName(File vmFile) {
-        return getTemplateName(DirectoryUtil.getFilePath(vmFile));
-    }
-
     public static String getTemplateName(String vmFile) {
         return vmFile.replace(getAppVmRoot(), "");
     }
 
-//    /**
-//     * 获取app的根目录
-//     *
-//     * @return
-//     */
-//    public static String getAppRootPath() {
-//        App app = ThreadContext.getContext().getApp();
-//        if (app == null) {
-//            return DirectoryUtil.normalizePath(Configuration.getDeployPath());
-//        } else {
-//            return DirectoryUtil.normalizePath(app.getRootPath());
-//        }
-//    }
-
-    static String appVmRoot = null;
-
     public static String getAppVmRoot() {
-        if (appVmRoot != null) {
-            return appVmRoot;
-        }
-        appVmRoot = DirectoryUtil.normalizePath(Configuration.getDeployPath());
-        return appVmRoot;
+        return ThreadContext.getApp().getRootParent();
     }
 
 

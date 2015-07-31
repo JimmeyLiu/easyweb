@@ -35,7 +35,7 @@ public class AppMonitor implements Runnable {
     private AppMonitor() {
         this.appsRoot = new HashSet<String>();
         this.observers = new HashMap<File, AppAlterationObserver>();
-        this.intervalMS = Configuration.isDevMod() ? 1000 : 10000;
+        this.intervalMS = Configuration.isDevMod() ? 5000 : 10000;
         this.service = Executors.newSingleThreadScheduledExecutor();
         this.deployer = new AppDeployer();
     }
@@ -78,27 +78,42 @@ public class AppMonitor implements Runnable {
                 AppChangeHolder.stop(observer.getApp());
             }
         }
-        File root = new File(Configuration.getDeployPath());
-        File[] files = root.listFiles();
-        if (files == null) {
-            return;
+
+        for (String appsRoot : Configuration.getDeployPaths()) {
+            File root = new File(appsRoot);
+            if (parseApp(root)) {
+                continue;
+            }
+            File[] files = root.listFiles();
+            if (files == null) {
+                return;
+            }
+            for (File file : files) {
+                parseApp(file);
+            }
         }
-        for (File file : files) {
-            if (file.isFile() || observers.containsKey(file)) {
-                continue;
-            }
-            File appFile = new File(file, "app.properties");
-            if (!appFile.exists()) {
-                continue;
-            }
-            App app = parse(appFile);
-            if (app == null) {
-                continue;
-            }
-            AppAlterationListener listener = new AppAlterationListener(app, deployer);
-            AppAlterationObserver observer = new AppAlterationObserver(app, file, listener);
-            observers.put(file, observer);
+    }
+
+    private boolean parseApp(File file) {
+        if (observers.containsKey(file)) {
+            return true;
         }
+
+        if (file.isFile()) {
+            return false;
+        }
+        File appFile = new File(file, "app.properties");
+        if (!appFile.exists()) {
+            return false;
+        }
+        App app = parse(appFile);
+        if (app == null) {
+            return false;
+        }
+        AppAlterationListener listener = new AppAlterationListener(app, deployer);
+        AppAlterationObserver observer = new AppAlterationObserver(app, file, listener);
+        observers.put(file, observer);
+        return true;
     }
 
     private static App parse(File file) {

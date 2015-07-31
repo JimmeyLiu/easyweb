@@ -14,25 +14,24 @@ import java.lang.reflect.Field;
  * User: jimmey/shantong
  * DateTime: 13-3-27 下午5:52
  */
-public class ResourceParser extends AnnotationParser {
+public class ResourceParser extends AnnotationParser<Resource> {
 
     public ResourceParser() {
         super(new ParsePhase[]{ParsePhase.Ioc});
     }
 
     @Override
-    public boolean isParse(Annotation annotation) {
-        return annotation instanceof Resource;  //To change body of implemented methods use File | Settings | File Templates.
+    public boolean match(Annotation annotation) {
+        return annotation instanceof Resource;
     }
 
     @Override
-    public void parse(App app, Annotation annotation, File file, Object target, GroovyObject groovyObject) {
+    public void parse(App app, Resource resource, File file, Object target, GroovyObject groovyObject) {
         if (!(target instanceof Field)) {
             return;
         }
 
         Field field = (Field) target;
-        Resource resource = (Resource) annotation;
         String name = field.getName();
         if (StringUtils.isNotBlank(resource.name())) {
             name = resource.name();

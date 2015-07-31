@@ -28,8 +28,10 @@ public class AppAlterationListener {
         if (deploying.compareAndSet(false, true)) {
             final ScanResult result = scanResult.copyAndReset();
             if (!result.isModified()) {
+                deploying.set(false);
                 return;
             }
+            EasywebLogger.debug("[Monitor] %s Restart %s", app.getName(), result.isRestart());
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -50,6 +52,7 @@ public class AppAlterationListener {
     }
 
     void onChange(AppFileType type, File file) {
+        EasywebLogger.debug("[Monitor] %s %s Change", app.getName(), file.getAbsolutePath());
         switch (type) {
             case BIZ_GROOVY:
                 scanResult.addBizGroovyFile(file.getAbsolutePath());

@@ -1,4 +1,3 @@
 org.easyweb.app.deploy.process.BizCompileProcessor
 org.easyweb.app.deploy.process.BizInitProcessor
 org.easyweb.app.deploy.process.WebProcessor
-org.easyweb.request.pipeline.PipelineProcessor

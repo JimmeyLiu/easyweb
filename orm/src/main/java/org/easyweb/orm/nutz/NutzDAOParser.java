@@ -5,6 +5,7 @@ import org.easyweb.app.App;
 import org.easyweb.bean.BeanFactory;
 import org.easyweb.groovy.annotation.AnnotationParser;
 import org.easyweb.orm.datasource.DataSourceFactory;
+import org.easyweb.util.EasywebLogger;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.NutDao;
 
@@ -16,16 +17,15 @@ import java.lang.annotation.Annotation;
  * User: jimmey/shantong
  * DateTime: 13-3-31 下午2:08
  */
-public class NutzDAOParser extends AnnotationParser {
+public class NutzDAOParser extends AnnotationParser<NutzDAO> {
 
     @Override
-    public boolean isParse(Annotation annotation) {
+    public boolean match(Annotation annotation) {
         return annotation instanceof NutzDAO;
     }
 
     @Override
-    public void parse(App app, Annotation annotation, File file, Object target, GroovyObject groovyObject) {
-        NutzDAO nutzDAO = (NutzDAO) annotation;
+    public void parse(App app, NutzDAO nutzDAO, File file, Object target, GroovyObject groovyObject) {
         DataSource dataSource = DataSourceFactory.getDataSource(app.getAppName(), nutzDAO.dataSource());
         if (dataSource == null) {
             throw new RuntimeException("dataSource " + nutzDAO.dataSource() + " not prepared");
@@ -38,7 +38,7 @@ public class NutzDAOParser extends AnnotationParser {
         } catch (Exception e) {
             throw new RuntimeException("dataSource " + nutzDAO.dataSource() + " inject error");
         }
-
+        EasywebLogger.info("[ORM] %s register %s", app.getName(), nutzDAO.name());
         BeanFactory.register(app, nutzDAO.name(), groovyObject);
     }
 }

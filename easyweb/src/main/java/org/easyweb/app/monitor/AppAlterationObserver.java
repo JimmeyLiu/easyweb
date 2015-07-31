@@ -121,12 +121,16 @@ public class AppAlterationObserver {
     }
 
     private void doDelete(FileEntry fileEntry) {
-        listener.onDelete(fileEntry.getFileType(), fileEntry.getFile());
+        if (!fileEntry.isDirectory()) {
+            listener.onDelete(fileEntry.getFileType(), fileEntry.getFile());
+        }
     }
 
     private void doChange(FileEntry entry, File file) {
         if (entry.refresh(file)) {
-            listener.onChange(entry.getFileType(), file);
+            if (!file.isDirectory()) {
+                listener.onChange(entry.getFileType(), file);
+            }
         }
     }
 

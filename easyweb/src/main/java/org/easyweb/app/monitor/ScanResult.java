@@ -50,7 +50,7 @@ public class ScanResult {
     }
 
     public boolean isModified() {
-        return modified;
+        return modified || restart;
     }
 
     public void setModified(boolean modified) {
