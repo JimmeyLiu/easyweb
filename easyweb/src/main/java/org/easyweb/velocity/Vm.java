@@ -9,7 +9,7 @@ import org.easyweb.util.DirectoryUtil;
  * Created with IntelliJ IDEA. User: jimmey Date: 12-11-23 Time: 下午11:11 To
  * change this template use File | Settings | File Templates.
  */
-public class GroovyVelocityEngine {
+public class Vm {
 
     public String render(String templateName) {
         Context context = ThreadContext.getContext();

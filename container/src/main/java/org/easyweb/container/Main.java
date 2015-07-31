@@ -14,7 +14,7 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        System.setProperty("easyweb.deployPath", "/Users/jimmey/workspace/platform/easyweb/container");
+        System.setProperty("easyweb.deployPath", "/Users/jimmey/workspace/platform/easyweb/apps");
         System.setProperty("easyweb.env", "dev");
         System.setProperty("org.mortbay.util.URI.charset", "utf-8");
         Map<String, Object> beans = new HashMap<String, Object>();

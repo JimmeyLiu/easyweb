@@ -19,7 +19,7 @@ public @interface Page {
      * @return
      * @Page(url="/your/path",layout="layout.vm")
      */
-    String url() default "";
+    String url();
 
     String layout() default "";
 

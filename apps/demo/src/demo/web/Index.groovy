@@ -1,10 +1,9 @@
-package web
+package demo.web
 
-import dao.MyDAO
-import model.Hello
+import demo.dao.MyDAO
+import demo.model.Hello
 import org.easyweb.annocation.Page
 import org.easyweb.annocation.RequestBean
-import org.easyweb.container.BeanService
 import org.easyweb.context.Context
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -19,7 +18,6 @@ class Index {
     @Resource(name = "myDAO")
     MyDAO myDAO;
     def vm
-    BeanService beanService;
 
     Logger logger = LoggerFactory.getLogger("hello")
 
@@ -29,7 +27,6 @@ class Index {
         myDAO.insert(hello);
 
         context.putContext("list", myDAO.findAll())
-        context.putContext("say", beanService.say())
         return vm.render("index.vm")
     }
 

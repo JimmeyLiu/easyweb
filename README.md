@@ -10,6 +10,9 @@
 1. easyweb: 核心实现
 2. container: 基于jetty的web运行容器，可以指定App目录直接run
 3. spring: 当有spring容器的时候，使用spring bean方式启动。将spring托管的bean注入到easyweb
+4. orm: 提供基于nutz的ORM框架，和Easyweb web无缝集成
+5. apps: 提供的demo等app
+6. docs: 相关设计说明文档
 
 ## 快速入门
 

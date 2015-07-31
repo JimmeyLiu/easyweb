@@ -10,7 +10,7 @@ import org.easyweb.groovy.MethodInterceptor;
 import org.easyweb.groovy.annotation.AnnotationParser;
 import org.easyweb.groovy.annotation.AnnotationParserFactory;
 import org.easyweb.util.EasywebLogger;
-import org.easyweb.velocity.GroovyVelocityEngine;
+import org.easyweb.velocity.Vm;
 
 import java.beans.IntrospectionException;
 import java.io.File;
@@ -29,12 +29,12 @@ public class GroovyObjectLoader {
 
     private MethodInterceptor methodInterceptor;
     private BeanBinding binding;
-    private GroovyVelocityEngine groovyVelocityEngine;
+    private Vm vm;
 
     private GroovyObjectLoader() {
         this.methodInterceptor = new MethodInterceptor();
         this.binding = new BeanBinding();
-        this.groovyVelocityEngine = new GroovyVelocityEngine();
+        this.vm = new Vm();
     }
 
     private static GroovyObjectLoader instance = new GroovyObjectLoader();
@@ -98,7 +98,7 @@ public class GroovyObjectLoader {
             return;
         }
         GroovyObject object = cacheDO.getObj();
-        binding.setProperty("vm", groovyVelocityEngine);
+        binding.setProperty("vm", vm);
         if (object instanceof Script) {
             Script script = (Script) object;
             script.setBinding(binding);
