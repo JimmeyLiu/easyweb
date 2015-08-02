@@ -5,6 +5,8 @@ import org.easyweb.app.monitor.AppMonitor;
 import org.easyweb.bean.BeanFactory;
 import org.easyweb.groovy.annotation.AnnotationParser;
 import org.easyweb.request.RequestProcessor;
+import org.easyweb.request.exception.ExceptionHandler;
+import org.easyweb.request.exception.ExceptionProcessor;
 import org.easyweb.util.EasywebLogger;
 import org.easyweb.velocity.VelocityTool;
 
@@ -36,6 +38,7 @@ public class Easyweb {
             load(AnnotationParser.class);
             load(DeployListener.class);
             load(VelocityTool.class);
+            ExceptionProcessor.loadHandlers();
             processor = new RequestProcessor();
             AppMonitor.getInstance().start();
         }

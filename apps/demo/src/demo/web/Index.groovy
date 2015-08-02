@@ -2,6 +2,7 @@ package demo.web
 
 import demo.dao.MyDAO
 import demo.model.Hello
+import org.easyweb.annocation.Method
 import org.easyweb.annocation.Page
 import org.easyweb.annocation.RequestBean
 import org.easyweb.context.Context
@@ -26,4 +27,9 @@ class Index {
         return vm.render("index.vm")
     }
 
+
+    @Page(url = "/demo/p")
+    def p() {
+        throw new SecurityException("abc");
+    }
 }

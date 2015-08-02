@@ -9,6 +9,8 @@ import org.easyweb.context.Context;
 import org.easyweb.context.ThreadContext;
 import org.easyweb.profiler.Profiler;
 import org.easyweb.request.assets.AssetsProcessor;
+import org.easyweb.request.exception.ExceptionProcessor;
+import org.easyweb.request.exception.ExceptionType;
 import org.easyweb.request.pipeline.Pipeline;
 import org.easyweb.request.render.CodeRender;
 import org.easyweb.request.uri.UriTemplate;
@@ -44,7 +46,7 @@ public class RequestProcessor {
             app = context.getApp();
             if (app == null || app.getStatus() != AppStatus.OK) {
                 EasywebLogger.error("[RequestProcessor] App not found or status error, %s", request.getRequestURI());
-                response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+                ExceptionProcessor.process(ExceptionType.APP_STATUS_ERROR, null, response);
                 return;
             }
 
@@ -110,15 +112,17 @@ public class RequestProcessor {
         }
         UriTemplate uriTemplate = AppUriMapping.getUriTemplate(app, uri, request.getMethod());
         if (uriTemplate == null) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return;
+            ExceptionProcessor.process(ExceptionType.PAGE_NOT_FOUND, null, response);
         } else {
             PageMethod pageMethod = uriTemplate.getPageMethod();
             if (StringUtils.isNotBlank(pageMethod.getLayout())) {
                 ThreadContext.getContext().setLayout(pageMethod.getLayout());
             }
-            String content = CodeRender.getInstance().renderPage(uriTemplate);
-            response(response, content);
+            try {
+                response(response, CodeRender.getInstance().renderPage(uriTemplate));
+            } catch (Exception e) {
+                ExceptionProcessor.process(ExceptionType.PROCESS_EXCEPTION, e, response);
+            }
         }
     }
 

@@ -10,7 +10,6 @@ class MenuValve {
 
     @Override
     void invoke() throws Exception {
-        println "1"
     }
 
 
