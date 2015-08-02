@@ -38,7 +38,7 @@ public class Context {
         if (app == null) {
             return "easyweb";
         }
-        return app.getAppName();
+        return app.getName();
     }
 
     public Map<String, Object> getContextMap() {

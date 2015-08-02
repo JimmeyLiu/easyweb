@@ -19,10 +19,10 @@ public class AppClassLoaderFactory extends AppChangeAdapter {
     private static Map<String, AppGroovyClassLoader> appGroovyClassLoaderMap = new ConcurrentHashMap<String, AppGroovyClassLoader>();
 
     public static AppGroovyClassLoader getAppClassLoader(App app) {
-        AppGroovyClassLoader classLoader = appGroovyClassLoaderMap.get(app.getAppName());
+        AppGroovyClassLoader classLoader = appGroovyClassLoaderMap.get(app.getName());
         if (classLoader == null) {
             classLoader = new AppGroovyClassLoader();
-            appGroovyClassLoaderMap.put(app.getAppName(), classLoader);
+            appGroovyClassLoaderMap.put(app.getName(), classLoader);
         }
         return classLoader;
     }
@@ -33,8 +33,8 @@ public class AppClassLoaderFactory extends AppChangeAdapter {
      * @param app
      */
     public static void reset(App app) {
-        appGroovyClassLoaderMap.remove(app.getAppName());
-        appGroovyClassLoaderMap.put(app.getAppName(), new AppGroovyClassLoader());
+        appGroovyClassLoaderMap.remove(app.getName());
+        appGroovyClassLoaderMap.put(app.getName(), new AppGroovyClassLoader());
     }
 
     public static GroovyClassLoader getAppBizClassLoader(App app) {

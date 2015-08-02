@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.easyweb.Configuration;
 import org.easyweb.app.App;
 import org.easyweb.app.AppStatus;
+import org.easyweb.app.command.CommandHandler;
 import org.easyweb.context.Context;
 import org.easyweb.context.ThreadContext;
 import org.easyweb.profiler.Profiler;
@@ -17,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Map;
 
 public class RequestProcessor {
 
@@ -32,14 +32,18 @@ public class RequestProcessor {
      * @throws IOException
      */
     public void process(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        App app = null;
         try {
+            if (CommandHandler.handle(request, response)) {
+                return;
+            }
             Profiler.start("process HTTP request");
             ThreadContext.init(request, response);
             initMDC();
             Context context = ThreadContext.getContext();
-            App app = context.getApp();
+            app = context.getApp();
             if (app == null || app.getStatus() != AppStatus.OK) {
-                EasywebLogger.error("App not found or status error, %s",request.getRequestURI());
+                EasywebLogger.error("[RequestProcessor] App not found or status error, %s", request.getRequestURI());
                 response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
                 return;
             }
@@ -83,16 +87,16 @@ public class RequestProcessor {
         } finally {
             ThreadContext.clean();
             Profiler.release();
-            String requestString = dumpRequest(request);
-            long duration = Profiler.getDuration();
-            int threshold = Configuration.getProfilerThreshold();
-            if (duration > threshold) {
-                EasywebLogger.warn(MessageFormat.format("Response of {0} returned in {1,number}ms\n{2}\n", requestString, duration, getDetail()));
-            } else {
-                EasywebLogger.debug(MessageFormat.format("Response of {0} returned in {1,number}ms\n{2}\n",
-                        requestString, duration, getDetail()));
+            if (app != null) {
+                String requestString = dumpRequest(request);
+                long duration = Profiler.getDuration();
+                if (duration > app.getProfilerThreshold()) {
+                    EasywebLogger.warn(MessageFormat.format("[Profiler] Response of {0} returned in {1,number}ms\n{2}\n", requestString, duration, getDetail()));
+                } else {
+                    EasywebLogger.debug(MessageFormat.format("[Profiler] Response of {0} returned in {1,number}ms\n{2}\n",
+                            requestString, duration, getDetail()));
+                }
             }
-
             Profiler.reset();
         }
 
@@ -144,7 +148,6 @@ public class RequestProcessor {
     private void initMDC() {
         Context context = ThreadContext.getContext();
         EasywebLogger.initMDC("requestURI", context.getRequest().getRequestURL().toString());
-        EasywebLogger.initMDC("app", context.getAppName());
     }
 
     private String dumpRequest(HttpServletRequest request) {

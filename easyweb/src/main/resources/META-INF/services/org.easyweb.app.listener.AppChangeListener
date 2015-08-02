@@ -4,3 +4,4 @@ org.easyweb.app.AppContainer
 org.easyweb.bean.BeanFactory
 org.easyweb.velocity.VmToolFactory
 org.easyweb.velocity.event.EscapeHtmlEvent
+org.easyweb.request.pipeline.Pipeline

@@ -1,6 +1,5 @@
 package org.easyweb.groovy.groovyobject;
 
-import org.easyweb.app.App;
 import groovy.lang.GroovyClassLoader;
 
 /**

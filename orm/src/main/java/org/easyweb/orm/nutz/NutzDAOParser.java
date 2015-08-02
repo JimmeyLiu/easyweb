@@ -5,7 +5,6 @@ import org.easyweb.app.App;
 import org.easyweb.bean.BeanFactory;
 import org.easyweb.groovy.annotation.AnnotationParser;
 import org.easyweb.orm.datasource.DataSourceFactory;
-import org.easyweb.util.EasywebLogger;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.NutDao;
 
@@ -26,7 +25,7 @@ public class NutzDAOParser extends AnnotationParser<NutzDAO> {
 
     @Override
     public void parse(App app, NutzDAO nutzDAO, File file, Object target, GroovyObject groovyObject) {
-        DataSource dataSource = DataSourceFactory.getDataSource(app.getAppName(), nutzDAO.dataSource());
+        DataSource dataSource = DataSourceFactory.getDataSource(app.getName(), nutzDAO.dataSource());
         if (dataSource == null) {
             throw new RuntimeException("dataSource " + nutzDAO.dataSource() + " not prepared");
         }
@@ -38,7 +37,6 @@ public class NutzDAOParser extends AnnotationParser<NutzDAO> {
         } catch (Exception e) {
             throw new RuntimeException("dataSource " + nutzDAO.dataSource() + " inject error");
         }
-        EasywebLogger.info("[ORM] %s register %s", app.getName(), nutzDAO.name());
         BeanFactory.register(app, nutzDAO.name(), groovyObject);
     }
 }

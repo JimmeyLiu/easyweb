@@ -9,6 +9,7 @@ import org.easyweb.app.deploy.DeployPhase;
 import org.easyweb.app.deploy.Deployer;
 import org.easyweb.app.monitor.ScanResult;
 import org.easyweb.groovy.groovyobject.AppClassLoaderFactory;
+import org.easyweb.groovy.groovyobject.EasywebClassLoader;
 import org.easyweb.util.EasywebLogger;
 
 import java.io.File;
@@ -66,7 +67,7 @@ public class BizCompileProcessor extends FileProcessor {
             GroovyClassLoader classLoader = AppClassLoaderFactory.getAppBizClassLoader(app);
             classLoader.addClasspath(appClassPath);
         } catch (Exception e) {
-            EasywebLogger.error(e);
+            EasywebLogger.error("[BizCompileProcessor] [%s] Exception %s", app.getName(), e.getMessage());
             throw new DeployException("Compile Error", e);
         }
     }

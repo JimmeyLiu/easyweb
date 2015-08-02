@@ -1,7 +1,6 @@
 package org.easyweb.request.upload;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.easyweb.util.EasywebLogger;
@@ -39,9 +38,10 @@ public class FileUploader {
         upload.setSizeMax(MAX_REQUEST_SIZE);
     }
 
-    public static void process(HttpServletRequest request) {
+    @SuppressWarnings("all")
+    public static boolean process(HttpServletRequest request) {
         if (!ServletFileUpload.isMultipartContent(request)) {
-            return;
+            return false;
         }
         upload.setHeaderEncoding("utf-8");
         try {
@@ -57,9 +57,18 @@ public class FileUploader {
                 }
             }
         } catch (Exception ex) {
-            EasywebLogger.error("FileUpload Error", ex);
-            return;
+            EasywebLogger.error("[FileUpload] Error", ex);
         }
+        return true;
     }
+
+    public static byte[] getFileBytes(HttpServletRequest request) {
+        return (byte[]) request.getAttribute("_file_");
+    }
+
+    public static String getFileName(HttpServletRequest request) {
+        return (String) request.getAttribute("_file_name_");
+    }
+
 
 }

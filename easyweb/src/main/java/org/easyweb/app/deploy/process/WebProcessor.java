@@ -36,7 +36,7 @@ public class WebProcessor extends FileProcessor {
             try {
                 groovyObjectLoader.instanceObject(true, app, new File(file));
             } catch (Throwable e) {
-                EasywebLogger.error("init web error,file=" + file, e);
+                EasywebLogger.error("[WebProcessor] [%s] Instance Exception " + file, e);
             }
         }
 
@@ -47,7 +47,7 @@ public class WebProcessor extends FileProcessor {
             try {
                 groovyObjectLoader.autowiredObject(true, app, new File(file));
             } catch (Throwable e) {
-                EasywebLogger.error(e);
+                EasywebLogger.error("[WebProcessor] [%s] Inject Exception " + file, e);
             }
         }
 

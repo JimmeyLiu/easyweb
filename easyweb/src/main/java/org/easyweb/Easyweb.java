@@ -57,7 +57,7 @@ public class Easyweb {
         Iterator<T> it = loader.iterator();
         while (it.hasNext()) {
             T t = it.next();
-            EasywebLogger.warn("[Service] Load " + t.toString());
+            EasywebLogger.debug("[ServiceLoader] Load " + t.toString());
         }
     }
 

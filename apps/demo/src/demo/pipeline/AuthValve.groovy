@@ -7,10 +7,9 @@ import org.easyweb.request.pipeline.Valve
  */
 @Valve(order = 2, method = "invoke")
 class AuthValve {
-
     @Override
     void invoke() throws Exception {
-        println "2"
+
     }
 
 }

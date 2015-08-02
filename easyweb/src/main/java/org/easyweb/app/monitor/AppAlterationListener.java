@@ -31,14 +31,14 @@ public class AppAlterationListener {
                 deploying.set(false);
                 return;
             }
-            EasywebLogger.debug("[Monitor] %s Restart %s", app.getName(), result.isRestart());
+            EasywebLogger.warn("[MonitorDeploy] [%s] ", app.getName());
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         deployer.deploy(app, result);
                     } catch (Exception e) {
-                        EasywebLogger.error("Deploy " + app.getName() + " Error", e);
+                        EasywebLogger.error("[DeployThread] [" + app.getName() + "] Error", e);
                     } finally {
                         deploying.set(false);
                     }
@@ -52,7 +52,7 @@ public class AppAlterationListener {
     }
 
     void onChange(AppFileType type, File file) {
-        EasywebLogger.debug("[Monitor] %s %s Change", app.getName(), file.getAbsolutePath());
+        EasywebLogger.debug("[Monitor] [%s] %s Change", app.getName(), file.getAbsolutePath());
         switch (type) {
             case BIZ_GROOVY:
                 scanResult.addBizGroovyFile(file.getAbsolutePath());

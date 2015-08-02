@@ -5,6 +5,6 @@ package org.easyweb.app;
  */
 public enum AppStatus {
 
-    INIT, OK, ERROR
+    INIT, OK, STOP, ERROR
 
 }

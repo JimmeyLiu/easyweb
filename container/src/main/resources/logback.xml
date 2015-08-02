@@ -1,11 +1,11 @@
 <configuration scan="true" scanPeriod="1 seconds">
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/tmp/easyweb.log</file>
+        <file>/tmp/container.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>easyweb.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <fileNamePattern>container.log.%d{yyyy-MM-dd}</fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>7</maxHistory>
         </rollingPolicy>
@@ -16,7 +16,26 @@
         </encoder>
     </appender>
 
-    <root level="INFO">
+    <appender name="easyweb" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/tmp/easyweb.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>easyweb.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d [%thread] %-5level %msg %n</pattern>
+            <immediateFlush>${log.flush:-true}</immediateFlush>
+        </encoder>
+    </appender>
+    <logger name="easyweb" level="INFO" additivity="false">
+        <appender-ref ref="easyweb"/>
+    </logger>
+
+    <root level="WARN">
         <appender-ref ref="FILE"/>
     </root>
 

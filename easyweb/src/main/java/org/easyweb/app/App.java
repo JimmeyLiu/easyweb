@@ -12,6 +12,9 @@ public class App {
     public static String APP_NAME = "app.name";
     public static String APP_WEB_PATH = "app.web.path";
     public static String VELOCITY_NO_ESCAPE = "velocity.noescape";
+    public static String GROOVY_METHOD_INTERCEPTOR = "groovy.method.interceptor";
+    public static String PROFILER_THRESHOLD = "profiler.threshold";
+
     /**
      * app名称
      */
@@ -40,16 +43,16 @@ public class App {
 
     private Map<String, String> config;
 
+    private boolean groovyMethodInterceptor;
+
+    private int profilerThreshold;
+
     public App(String name) {
         this.name = name;
         this.config = new HashMap<String, String>();
     }
 
     public String getName() {
-        return name;
-    }
-
-    public String getAppName() {
         return name;
     }
 
@@ -66,6 +69,25 @@ public class App {
         this.rootPath = DirectoryUtil.getFileParentPath(configFile);
         this.rootParent = DirectoryUtil.getFileParentPath(configFile.getParentFile());
         this.classpath = this.rootPath + "/classes";
+    }
+
+    /**
+     * 在app父目录增加 name.lock的文件来锁定app，当这个文件存在的时候，发布线程将忽略目录下面的修改。
+     * <p/>
+     * 用于app线上发布，流程如下：
+     * 1. 线上app打包发布时，将app打出zip包；
+     * 2. 发布时，先创建demo.lock文件
+     * 3. 再将app下线；
+     * 4. 删除老的代码
+     * 5. 将新的代码包解压到目录下
+     * 6. 删除demo.lock
+     * <p/>
+     * 以上操作通过发布脚本来实现
+     *
+     * @return
+     */
+    public File getLock() {
+        return new File(rootParent, name + ".lock");
     }
 
     public String getRootParent() {
@@ -99,6 +121,22 @@ public class App {
     public String getConfig(String key, String defaultValue) {
         String v = getConfig(key);
         return v != null ? v : defaultValue;
+    }
+
+    public boolean isGroovyMethodInterceptor() {
+        return groovyMethodInterceptor;
+    }
+
+    public void setGroovyMethodInterceptor(boolean groovyMethodInterceptor) {
+        this.groovyMethodInterceptor = groovyMethodInterceptor;
+    }
+
+    public int getProfilerThreshold() {
+        return profilerThreshold;
+    }
+
+    public void setProfilerThreshold(int profilerThreshold) {
+        this.profilerThreshold = profilerThreshold;
     }
 
     public void putConfig(String key, String value) {

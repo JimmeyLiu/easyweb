@@ -37,7 +37,7 @@ public abstract class BaseDAO<T> {
         try {
             new TableChecker(dao, getFirstGenericType()).run();
         } catch (SQLException e) {
-            EasywebLogger.error("table check error", e);
+            EasywebLogger.error("[TableChecker] table check error", e);
             throw new RuntimeException("表校验出错", e);
         }
     }

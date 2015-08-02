@@ -18,7 +18,7 @@ public class VmToolParser extends AnnotationParser<VmTool> {
     @Override
     public void parse(App app, VmTool vmTool, File file, Object target, GroovyObject groovyObject) {
         if (StringUtils.isNotBlank(vmTool.value())) {
-            VmToolFactory.putAppTool(app.getAppName(), vmTool.value(), groovyObject);
+            VmToolFactory.putAppTool(app.getName(), vmTool.value(), groovyObject);
         }
     }
 

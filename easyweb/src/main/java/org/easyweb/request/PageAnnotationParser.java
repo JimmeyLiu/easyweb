@@ -23,7 +23,7 @@ public class PageAnnotationParser extends AnnotationParser<Page> {
             return;
         }
         Method javaMethod = (Method) target;
-        EasywebLogger.warn("Add Page [%s]%s", page.method(), page.url());
+        EasywebLogger.warn("[PageAnnotationParser] [%s] Add %s %s", app.getName(), page.method(), page.url());
         AppUriMapping.put(app, page, file, javaMethod);
     }
 

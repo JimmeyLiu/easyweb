@@ -1,8 +1,10 @@
 package org.easyweb.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Created by jimmey on 15-7-30.
@@ -30,5 +32,40 @@ public class IOUtils {
         return count;
     }
 
+    public static void unzipTo(byte[] zipBytes, String parent) throws IOException {
+        ZipInputStream inputStream = new ZipInputStream(new ByteArrayInputStream(zipBytes));
+        File file = new File(parent);
+
+        ZipOutputStream outputStream = new ZipOutputStream(new FileOutputStream(file));
+        ZipEntry entry = null;
+        while ((entry = inputStream.getNextEntry()) != null) {
+            outputStream.putNextEntry(entry);
+        }
+
+    }
+
+    public static byte[] unzip(byte[] bytes) throws IOException {
+        GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(bytes));
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        final byte[] buf = new byte[8192];
+
+        for (; ; ) {
+            int size = in.read(buf);
+            if (size == -1) break;
+            out.write(buf, 0, size);
+        }
+
+        in.close();
+        return out.toByteArray();
+    }
+
+    public static void main(String[] args) throws Exception {
+        String zip = "/Users/jimmey/workspace/platform/easyweb/apps1.tgz";
+        ZipInputStream inputStream = new ZipInputStream(new GZIPInputStream(new FileInputStream(zip)));
+        ZipEntry entry = null;
+        while ((entry = inputStream.getNextEntry()) != null) {
+            System.out.println(entry.getName());
+        }
+    }
 
 }

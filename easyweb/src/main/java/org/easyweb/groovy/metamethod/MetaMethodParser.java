@@ -16,7 +16,7 @@ public class MetaMethodParser extends AnnotationParser<MyMetaMethod> {
     @Override
     public void parse(App app, MyMetaMethod annotation, File file, Object target, GroovyObject groovyObject) {
         if (groovyObject instanceof IMetaMethod) {
-            MetaMethodFactory.register(app.getAppName(), (IMetaMethod) groovyObject);
+            MetaMethodFactory.register(app.getName(), (IMetaMethod) groovyObject);
         }
     }
 

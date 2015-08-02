@@ -45,7 +45,7 @@ public class BizInitProcessor extends FileProcessor {
                 groovyObjectLoader.autowiredObject(false, app, new File(file));
             }
         } catch (Exception e) {
-            EasywebLogger.error("biz init error", e);
+            EasywebLogger.error("[BizInitProcessor] [%s] Exception %s", app.getName(), e.getMessage());
             throw new DeployException("Init Error", e);
         }
     }

@@ -24,27 +24,15 @@ public class MethodTransformationInvoker extends CodeVisitorSupport implements A
     }
 
     public void visit(ASTNode[] nodes, SourceUnit source) {
-        EasywebLogger.warn("visit " + source.getName());
+        EasywebLogger.debug("[MethodTransformationInvoker] File %s MainClass %s", source.getName(), source.getAST().getMainClassName());
         FileMainClass.set(source.getName(), source.getAST().getMainClassName());
         List<MethodNode> methods = source.getAST().getMethods();
-        if (!methods.isEmpty()) {
+        if (!transformations.isEmpty() && !methods.isEmpty()) {
             for (MethodNode method : methods) {
                 for (MethodTransformation transformation : transformations) {
                     transformation.transformat(source, method, null);
                 }
             }
         }
-//        List<ClassNode> classNodes = source.getAST().getClasses();
-//        if (!classNodes.isEmpty()) {
-//            for (ClassNode classNode : classNodes) {
-//                if (classNode instanceof InnerClassNode) {
-//                    continue;
-//                }
-//                for (MethodNode method : classNode.getMethods()) {
-//                    GroovyEngine.putScriptMethod(source.getName(), method.getName(), method.getParameters().length);
-//                }
-//            }
-//        }
-
     }
 }

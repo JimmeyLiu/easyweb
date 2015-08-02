@@ -31,7 +31,7 @@ public class AppDeployer {
             listeners.put(phase, list);
         }
         list.add(deployListener);
-        EasywebLogger.error("register deployer phase: %s deployer: %s", phase.name(), deployListener.getClass().getName());
+        EasywebLogger.debug("[DeployListener] register deployer %s %s", deployListener, phase.name());
     }
 
     public void deploy(App app, ScanResult result) throws DeployException {
@@ -44,13 +44,11 @@ public class AppDeployer {
         //调用初始化处理
         for (DeployPhase phase : DeployPhase.getAll()) {
             List<DeployListener> list = listeners.get(phase);
-            EasywebLogger.error("Phase: %s List: %s", phase.name(), list);
             if (list == null) {
                 continue;
             }
-
             for (DeployListener processor : list) {
-                EasywebLogger.error(phase.name() + " " + processor.getClass().getName());
+                EasywebLogger.debug("[DeployApp] [%s] %s", app.getName(), processor);
                 processor.process(result);
             }
         }

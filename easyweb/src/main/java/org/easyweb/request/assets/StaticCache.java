@@ -33,7 +33,7 @@ public class StaticCache {
             data = new AssetsData(file.lastModified(), stream.toByteArray());
             map.put(key, data);
         } catch (Exception e) {
-            EasywebLogger.error("StaticCache error", e);
+            EasywebLogger.error("[StaticCache] Error " + key, e);
         }
         return data;
     }

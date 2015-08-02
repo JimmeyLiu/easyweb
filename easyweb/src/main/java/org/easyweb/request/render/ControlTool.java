@@ -55,7 +55,7 @@ public class ControlTool implements VelocityTool {
                 try {
                     return codeRender.render(file, "execute");
                 } catch (Exception e) {
-                    EasywebLogger.error("ControlTool Render Error", e);
+                    EasywebLogger.error(String.format("[ControlTool] [%s] Render %s Error", context.getAppName(), vmFile), e);
                     return "<!-- control error " + e.getMessage() + "-->";
                 } finally {
                     context.setCurrentPath(oldCurrentPath);//把当前目录会写回去

@@ -46,7 +46,7 @@ public class EscapeHtmlEvent extends AppChangeAdapter implements ReferenceInsert
 
     @Override
     public void stop(App app) {
-        appNoescapePattern.remove(app.getAppName());
+        appNoescapePattern.remove(app.getName());
     }
 
 
@@ -59,7 +59,7 @@ public class EscapeHtmlEvent extends AppChangeAdapter implements ReferenceInsert
                 patterns.add(Pattern.compile(rule));
             }
         }
-        appNoescapePattern.put(app.getAppName(), patterns);
+        appNoescapePattern.put(app.getName(), patterns);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class EscapeHtmlEvent extends AppChangeAdapter implements ReferenceInsert
             return value;
         }
 
-        List<Pattern> noescapes = appNoescapePattern.get(app.getAppName());
+        List<Pattern> noescapes = appNoescapePattern.get(app.getName());
         if (noescapes == null) {
             return value;
         }

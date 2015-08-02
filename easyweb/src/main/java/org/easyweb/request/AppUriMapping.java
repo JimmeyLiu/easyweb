@@ -63,10 +63,10 @@ public class AppUriMapping {
     }
 
     public static Map<String, UriTemplate> getAppUris(App app) {
-        Map<String, UriTemplate> list = appUriMappings.get(app.getAppName());
+        Map<String, UriTemplate> list = appUriMappings.get(app.getName());
         if (list == null) {
             list = new HashMap<String, UriTemplate>();
-            appUriMappings.put(app.getAppName(), list);
+            appUriMappings.put(app.getName(), list);
         }
         return list;
     }

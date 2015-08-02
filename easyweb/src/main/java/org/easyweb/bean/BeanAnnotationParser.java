@@ -31,7 +31,7 @@ public class BeanAnnotationParser extends AnnotationParser<Bean> {
             String s = name.substring(0, 1);
             name = s.toLowerCase() + name.substring(1, name.length());
         }
-        EasywebLogger.info("[Bean] %s register %s", app.getName(), name);
+        EasywebLogger.warn("[Bean] [%s] register %s", app.getName(), name);
         BeanFactory.register(app, name, groovyObject);
     }
 

@@ -28,11 +28,11 @@ public class VmToolFactory extends AppChangeAdapter {
     }
 
     public void stop(App app) {
-        appVmTools.remove(app.getAppName());
+        appVmTools.remove(app.getName());
     }
 
     public void failed(App app) {
-        appVmTools.remove(app.getAppName());
+        appVmTools.remove(app.getName());
     }
 
 }

@@ -60,15 +60,15 @@ public class ProfilerFilter implements Filter {
 
             if (failed != null) {
 //                if (logger.isErrorEnabled()) {
-                EasywebLogger.error(MessageFormat.format("Response of {0} failed in {1,number}ms: {2}\n{3}\n", requestString, duration, failed.getLocalizedMessage(), getDetail()));
+                EasywebLogger.debug(MessageFormat.format("[Profiler] Response of {0} failed in {1,number}ms: {2}\n{3}\n", requestString, duration, failed.getLocalizedMessage(), getDetail()));
 //                }
             } else if (duration > threshold) {
 //                if (logger.isWarnEnabled()) {
-                EasywebLogger.warn(MessageFormat.format("Response of {0} returned in {1,number}ms\n{2}\n",
+                EasywebLogger.warn(MessageFormat.format("[Profiler] Response of {0} returned in {1,number}ms\n{2}\n",
                         requestString, duration, getDetail()));
 //                }
             } else {
-                EasywebLogger.info(MessageFormat.format("Response of {0} returned in {1,number}ms\n{2}\n",
+                EasywebLogger.debug(MessageFormat.format("[Profiler] Response of {0} returned in {1,number}ms\n{2}\n",
                         requestString, duration, getDetail()));
             }
 

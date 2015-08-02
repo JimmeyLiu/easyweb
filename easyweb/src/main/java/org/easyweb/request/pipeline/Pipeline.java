@@ -2,8 +2,8 @@ package org.easyweb.request.pipeline;
 
 import org.easyweb.app.App;
 import org.easyweb.app.listener.AppChangeAdapter;
-import org.easyweb.context.Context;
 import org.easyweb.context.ThreadContext;
+import org.easyweb.util.EasywebLogger;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,17 +16,22 @@ public class Pipeline extends AppChangeAdapter {
 
     private static Map<String, List<ValveObject>> appValves = new ConcurrentHashMap<String, List<ValveObject>>();
 
-    public static void addValve(App app, ValveObject valveObject) {
-        List<ValveObject> list = appValves.get(app.getAppName());
+    public static void addValve(final App app, ValveObject valveObject) {
+        List<ValveObject> list = appValves.get(app.getName());
         if (list == null) {
             list = new ArrayList<ValveObject>();
-            appValves.put(app.getAppName(), list);
+            appValves.put(app.getName(), list);
         }
         list.add(valveObject);
+        EasywebLogger.warn("[Pipeline] [%s] addValve %s", app.getName(), valveObject.groovyObject);
         Collections.sort(list, new Comparator<ValveObject>() {
             @Override
             public int compare(ValveObject o1, ValveObject o2) {
-                return o1.order() > o2.order() ? 1 : -1;
+                int i = o1.order() - o2.order();
+                if (i == 0) {
+                    throw new RuntimeException(String.format("[Pipeline] [%s] valve order same %s %s", app.getName(), o1.groovyObject, o2.groovyObject));
+                }
+                return i;
             }
         });
     }
@@ -36,7 +41,7 @@ public class Pipeline extends AppChangeAdapter {
         if (app == null) {
             return;
         }
-        List<ValveObject> list = appValves.get(app.getAppName());
+        List<ValveObject> list = appValves.get(app.getName());
         if (list == null) {
             return;
         }
@@ -47,7 +52,7 @@ public class Pipeline extends AppChangeAdapter {
 
     @Override
     public void stop(App app) {
-        appValves.remove(app.getAppName());
+        appValves.remove(app.getName());
     }
 
 }

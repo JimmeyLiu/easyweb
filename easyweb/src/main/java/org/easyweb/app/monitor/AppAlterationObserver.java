@@ -1,6 +1,7 @@
 package org.easyweb.app.monitor;
 
 import org.easyweb.app.App;
+import org.easyweb.util.EasywebLogger;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -30,6 +31,7 @@ public class AppAlterationObserver {
         this.fileFilter = new FileFilter() {
             @Override
             public boolean accept(File pathname) {
+
                 return !pathname.getAbsolutePath().startsWith(app.getClasspath())
                         && !pathname.getName().startsWith(".");
             }
@@ -47,6 +49,11 @@ public class AppAlterationObserver {
     }
 
     public void checkAndNotify() {
+        if (app.getLock().exists()) {
+            EasywebLogger.warn("[AppDeploy] [%s] app locked", app.getName());
+            return;
+        }
+
         File rootFile = rootEntry.getFile();
         if (rootFile.exists()) {
             checkAndNotify(rootEntry, rootEntry.getChildren(), listFiles(rootFile));

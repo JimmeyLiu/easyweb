@@ -8,6 +8,8 @@ import java.util.Set;
 public class Configuration {
 
     public static String DEPLOY_PATH = "easyweb.deploy";
+    public static String ENV_MODE = "easyweb.env";
+    public static String DEPLOY_TOKEN = "easyweb.token";
 
     /**
      * 开发环境
@@ -15,14 +17,12 @@ public class Configuration {
      * @return
      */
     public static boolean isDevMod() {
-        return "dev".equals(System.getProperty("easyweb.env"));
-    }
-
-    public static boolean isMethodInterceptor() {
-        return Boolean.getBoolean("easyweb.methodInterceptor");
+        return "dev".equals(System.getProperty(ENV_MODE));
     }
 
     private static Set<String> deployPaths;
+
+    private static String appsRoot;
 
     public static Set<String> getDeployPaths() {
         if (deployPaths == null) {
@@ -38,8 +38,12 @@ public class Configuration {
         return deployPaths;
     }
 
-    public static int getProfilerThreshold() {
-        return Integer.getInteger("profiler.threshold", 2000);
+    public static String getAppsRoot() {
+        return appsRoot;
+    }
+
+    public static void setAppsRoot(String appsRoot) {
+        Configuration.appsRoot = appsRoot;
     }
 
     public static String getRequestCharset() {
@@ -48,6 +52,10 @@ public class Configuration {
 
     public static String getCodeCharset() {
         return System.getProperty("easyweb.codeCharset", "UTF-8");
+    }
+
+    public static String getDeployToken() {
+        return System.getProperty(DEPLOY_TOKEN, "ew");
     }
 
 

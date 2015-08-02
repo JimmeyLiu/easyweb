@@ -4,6 +4,7 @@ import org.easyweb.app.App;
 import org.easyweb.app.listener.AppChangeAdapter;
 import org.easyweb.context.ThreadContext;
 import org.easyweb.groovy.groovyobject.EasywebClassLoader;
+import org.easyweb.util.EasywebLogger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,12 +26,13 @@ public class BeanFactory extends AppChangeAdapter {
         if (classLoader instanceof EasywebClassLoader && ((EasywebClassLoader) classLoader).isWeb()) {
             return;
         }
-        Map<String, Object> appBeans = getAppBeans(app.getAppName());
+        Map<String, Object> appBeans = getAppBeans(app.getName());
         appBeans.put(name, bean);
+        EasywebLogger.warn("[BeanFactory] [%s] register %s", app.getName(), name);
     }
 
     public static Object getBean(String name) {
-        return getAppBeans(ThreadContext.getContext().getApp().getAppName()).get(name);
+        return getAppBeans(ThreadContext.getContext().getApp().getName()).get(name);
     }
 
     public static Object getAppBean(String appKey, String beanName) {
@@ -51,18 +53,18 @@ public class BeanFactory extends AppChangeAdapter {
     }
 
     public static Map<String, Object> getBeans(App app) {
-        String key = app == null ? NATIVE : app.getAppName();
+        String key = app == null ? NATIVE : app.getName();
         return getAppBeans(key);
     }
 
     @Override
     public void stop(App app) {
-        beans.remove(app.getAppName());
+        beans.remove(app.getName());
     }
 
     @Override
     public void failed(App app) {
-        beans.remove(app.getAppName());
+        beans.remove(app.getName());
     }
 
 }

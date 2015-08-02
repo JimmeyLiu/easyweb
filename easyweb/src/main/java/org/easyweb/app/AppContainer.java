@@ -20,23 +20,23 @@ public class AppContainer extends AppChangeAdapter {
 
     @Override
     public void stop(App app) {
-        EasywebLogger.warn("[AppContainer] stop %s", app.getName());
-        app.setStatus(AppStatus.ERROR);
-        deployedApps.putIfAbsent(app.getAppName(), app);
+        EasywebLogger.warn("[AppContainer] [%s] stop", app.getName());
+        app.setStatus(AppStatus.STOP);
+        deployedApps.putIfAbsent(app.getName(), app);
     }
 
     @Override
     public void success(App app) {
-        EasywebLogger.warn("[AppContainer] start %s success", app.getName());
+        EasywebLogger.warn("[AppContainer] [%s] start success", app.getName());
         app.setStatus(AppStatus.OK);
-        deployedApps.putIfAbsent(app.getAppName(), app);
+        deployedApps.putIfAbsent(app.getName(), app);
     }
 
     @Override
     public void failed(App app) {
-        EasywebLogger.warn("[AppContainer] start %s error", app.getName());
+        EasywebLogger.warn("[AppContainer] [%s] start error", app.getName());
         app.setStatus(AppStatus.ERROR);
-        deployedApps.putIfAbsent(app.getAppName(), app);
+        deployedApps.putIfAbsent(app.getName(), app);
     }
 
 }

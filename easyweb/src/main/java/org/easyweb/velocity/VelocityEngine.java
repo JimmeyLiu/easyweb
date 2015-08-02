@@ -12,7 +12,6 @@ import org.easyweb.velocity.event.IgnoreTool;
 import org.easyweb.velocity.tool.PageAttributeTool;
 import org.easyweb.velocity.tool.SystemUtil;
 
-import javax.annotation.Resource;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -112,7 +111,7 @@ public class VelocityEngine {
         try {
             velocityEngine.getTemplate(name).merge(velocityContext, writer);
         } catch (Exception e) {
-            EasywebLogger.error("velocity error", e);
+            EasywebLogger.error(String.format("[VelocityEngine] [%s] velocity error", ThreadContext.getApp().getName()), e);
         } finally {
             Profiler.release();
         }

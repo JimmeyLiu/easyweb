@@ -33,7 +33,7 @@ public class DataSourceFactory {
     private static Map<String, DataSource> appDataSource = new ConcurrentHashMap<String, DataSource>(2);
 
     public static void register(App app, String dataSourceName, DataSource dataSource) {
-        appDataSource.put(getAppDs(app.getAppName(), dataSourceName), dataSource);
+        appDataSource.put(getAppDs(app.getName(), dataSourceName), dataSource);
     }
 
     public static DataSource getDataSource(String appKey, String name) {

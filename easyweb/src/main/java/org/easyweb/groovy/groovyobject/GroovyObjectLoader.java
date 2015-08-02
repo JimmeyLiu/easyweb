@@ -50,23 +50,29 @@ public class GroovyObjectLoader {
      * @param app
      * @param file
      */
-    public void instanceObject(boolean webClass, App app, File file) {
+    public void instanceObject(boolean webClass, App app, File file) throws Exception {
         GroovyClassLoader classLoader = getByType(webClass, app);
         CacheDO cacheDO = Cacher.get(classLoader, file);
         String path = file.getAbsolutePath();
         if (cacheDO == null) {
             try {
-                EasywebLogger.warn("load file " + path);
+                EasywebLogger.debug("[GroovyClassLoader] [%s] load %s", app.getName(), path);
                 Class<?> clazz = null;
                 if (webClass) {//对应两种不同的load方式
                     try {
                         GroovyCodeSource codeSource = new GroovyCodeSource(file, Configuration.getCodeCharset());
                         clazz = AppClassLoaderFactory.getAppWebClassLoader(app).parseClass(codeSource, false);
                     } catch (Exception e) {
-                        EasywebLogger.error("init error:" + path, e);
+                        EasywebLogger.error("[GroovyClassLoader] [%s] parseClass Error: " + path, e);
                     }
                 } else {
                     clazz = classLoader.loadClass(FileMainClass.get(file.getAbsolutePath()));
+                    String msg = String.format("[GroovyClassLoader] [%s] %s load by %s", app.getName(), clazz, clazz.getClassLoader());
+                    if (clazz.getClassLoader() != classLoader) {
+                        EasywebLogger.error(msg);
+                    } else {
+                        EasywebLogger.warn(msg);
+                    }
                 }
 
                 GroovyObject obj = (GroovyObject) clazz.newInstance();
@@ -76,12 +82,11 @@ public class GroovyObjectLoader {
                 cacheDO.setObj(obj);
                 cacheDO.setAutowired(false);
                 Cacher.put(classLoader, file, cacheDO);
-            } catch (ClassNotFoundException e) {
-                EasywebLogger.error("init error " + path, e);
-            } catch (InstantiationException e) {
-                EasywebLogger.error("init error" + path, e);
-            } catch (IllegalAccessException e) {
-                EasywebLogger.error("init error" + path, e);
+            } catch (Exception e) {
+                EasywebLogger.error("[GroovyObjectLoader] [%s] instance %s", app.getName(), path);
+                if (!webClass) {
+                    throw e;
+                }
             }
         }
     }
@@ -129,7 +134,7 @@ public class GroovyObjectLoader {
         autowired(webClass, app, file, null);
     }
 
-    public GroovyObject getObject(boolean webClass, App app, File file) {
+    public GroovyObject getObject(boolean webClass, App app, File file) throws Exception {
         GroovyClassLoader classLoader = getByType(webClass, app);
         CacheDO cacheDO = Cacher.get(classLoader, file);
         if (cacheDO == null) {//如果没有，先执行一下
