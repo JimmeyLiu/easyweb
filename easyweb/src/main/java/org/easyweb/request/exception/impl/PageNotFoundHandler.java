@@ -1,10 +1,9 @@
 package org.easyweb.request.exception.impl;
 
-import com.alibaba.fastjson.JSON;
 import org.easyweb.Configuration;
 import org.easyweb.app.App;
 import org.easyweb.context.ThreadContext;
-import org.easyweb.request.AppUriMapping;
+import org.easyweb.request.uri.AppUriContainer;
 import org.easyweb.request.exception.ExceptionHandler;
 import org.easyweb.request.exception.ExceptionType;
 import org.easyweb.request.uri.UriTemplate;
@@ -28,7 +27,7 @@ public class PageNotFoundHandler extends ExceptionHandler {
         App app = ThreadContext.getApp();
         StringBuilder sb = new StringBuilder();
         sb.append("<h1>Page Not Found</h1><p>page not found in the App</p><h2>The App's Pages</h2><ul>");
-        for (UriTemplate template : AppUriMapping.getAppUris(app).values()) {
+        for (UriTemplate template : AppUriContainer.getAppUris(app).values()) {
             sb.append("<li>").append(template.getPageMethod().getHttpMethod());
             sb.append(" ").append(template.getUriTemplate());
             sb.append("</li>");

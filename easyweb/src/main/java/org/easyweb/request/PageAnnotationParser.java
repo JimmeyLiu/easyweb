@@ -4,6 +4,7 @@ import groovy.lang.GroovyObject;
 import org.easyweb.annocation.Page;
 import org.easyweb.app.App;
 import org.easyweb.groovy.annotation.AnnotationParser;
+import org.easyweb.request.uri.AppUriContainer;
 import org.easyweb.util.EasywebLogger;
 
 import java.io.File;
@@ -24,7 +25,7 @@ public class PageAnnotationParser extends AnnotationParser<Page> {
         }
         Method javaMethod = (Method) target;
         EasywebLogger.warn("[PageAnnotationParser] [%s] Add %s %s", app.getName(), page.method(), page.url());
-        AppUriMapping.put(app, page, file, javaMethod);
+        AppUriContainer.put(app, page, file, javaMethod);
     }
 
 }

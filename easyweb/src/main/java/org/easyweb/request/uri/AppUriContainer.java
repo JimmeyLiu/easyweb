@@ -1,7 +1,8 @@
-package org.easyweb.request;
+package org.easyweb.request.uri;
 
 import org.easyweb.annocation.Page;
 import org.easyweb.profiler.Profiler;
+import org.easyweb.request.PageMethod;
 import org.easyweb.request.uri.UriTemplate;
 import org.easyweb.app.App;
 import org.apache.commons.lang.StringUtils;
@@ -16,7 +17,7 @@ import java.util.Map;
  * Date: 13-7-4
  * Time: 下午3:05
  */
-public class AppUriMapping {
+public class AppUriContainer {
 
     private static Map<String, Map<String, UriTemplate>> appUriMappings = new HashMap<String, Map<String, UriTemplate>>();
 

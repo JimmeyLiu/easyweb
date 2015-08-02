@@ -13,6 +13,7 @@ import org.easyweb.request.exception.ExceptionProcessor;
 import org.easyweb.request.exception.ExceptionType;
 import org.easyweb.request.pipeline.Pipeline;
 import org.easyweb.request.render.CodeRender;
+import org.easyweb.request.uri.AppUriContainer;
 import org.easyweb.request.uri.UriTemplate;
 import org.easyweb.util.EasywebLogger;
 
@@ -110,7 +111,7 @@ public class RequestProcessor {
         if (context.getForwardTo() != null) {
             uri = context.getForwardTo();
         }
-        UriTemplate uriTemplate = AppUriMapping.getUriTemplate(app, uri, request.getMethod());
+        UriTemplate uriTemplate = AppUriContainer.getUriTemplate(app, uri, request.getMethod());
         if (uriTemplate == null) {
             ExceptionProcessor.process(ExceptionType.PAGE_NOT_FOUND, null, response);
         } else {
